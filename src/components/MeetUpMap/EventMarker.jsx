@@ -5,7 +5,7 @@ export default function EventMarker({ meetUpData, useMeetUpStore }) {
     localStorage.setItem('selectedCafe', title);
     useMeetUpStore.setState({ selectedCafe: title });
   };
-  console.log(meetUpData);
+
   return (
     <>
       {meetUpData.map((data) => {

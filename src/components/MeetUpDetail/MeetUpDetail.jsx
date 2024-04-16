@@ -52,7 +52,7 @@ export default function MeetUpDetail() {
             <>
               <MeetUpDetailItem title="기본특전" content={basicGift} />
               <MeetUpDetailItem title="선착특전" content={priorityGift} />
-              <MeetUpDetailItem title="디저트특전" content={desertGift} />
+              <MeetUpDetailItem title="쿠키특전" content={desertGift} />
             </>
           }
         />

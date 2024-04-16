@@ -1,8 +1,8 @@
-import EventMarker from './EventMarker';
 import UserLocation from './UserLocation';
 import { useEffect, useState } from 'react';
 import { useMeetUpStore } from '@/store/store';
 import { Map, ZoomControl } from 'react-kakao-maps-sdk';
+import Clusterer from './Clusterer';
 
 export default function MeetUpMap({ meetUpData }) {
   const [userLocation, setUserLocation] = useState(null);
@@ -23,10 +23,10 @@ export default function MeetUpMap({ meetUpData }) {
       center={mapCenter}
       isPanto={true}
       className="relative h-full w-full"
-      level={5}
+      level={8}
     >
       <ZoomControl />
-      <EventMarker meetUpData={meetUpData} useMeetUpStore={useMeetUpStore} />
+      <Clusterer meetUpData={meetUpData} useMeetUpStore={useMeetUpStore} />
       {userLocation && (
         <UserLocation
           position={userLocation}
