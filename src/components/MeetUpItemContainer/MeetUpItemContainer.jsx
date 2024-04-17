@@ -10,6 +10,8 @@ export default function MeetUpItemContainer({ meetUpData, mapStyle }) {
         return lowerdData.includes(searchText);
       })
     : meetUpData;
+
+  console.log(searchResult);
   return (
     <ul
       className={`${mapStyle} absolute bottom-3 z-20 flex w-full snap-x  gap-4 rounded-xl`}

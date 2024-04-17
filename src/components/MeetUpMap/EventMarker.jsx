@@ -2,8 +2,8 @@ import { MapMarker, CustomOverlayMap } from 'react-kakao-maps-sdk';
 
 export default function EventMarker({ meetUpData, useMeetUpStore }) {
   const handleClickMarker = (title) => {
-    localStorage.setItem('selectedCafe', title);
     useMeetUpStore.setState({ selectedCafe: title });
+    useMeetUpStore.getState((state) => state.selectedLocation);
   };
 
   return (

@@ -1,11 +1,22 @@
-import { useMeetUpStore } from '@/store/store';
-import { useState, useEffect } from 'react';
-import { FaSquareArrowUpRight } from 'react-icons/fa6';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useMeetUpStore } from '@/store/store';
+import { FaSquareArrowUpRight } from 'react-icons/fa6';
+import { useRef } from 'react';
 
 export default function MeetUpItem({ info }) {
   // 카페 이름 저장 함수
   const selectedCafe = useMeetUpStore((state) => state.selectedCafe);
+  const setSelectedLocation = useMeetUpStore(
+    (state) => state.setSelectedLocation
+  );
+
+  // 클릭 이벤트 핸들러 안에서 선택된 마커의 위치를 업데이트
+  const handleSelectItem = (cluster) => {
+    // 위도와 경도를 전역 상태로 업데이트
+    setSelectedLocation({ lat: info.lat, lng: info.lng });
+    useMeetUpStore.setState({ selectedCafe: info.cafeName });
+  };
 
   useEffect(() => {
     if (info.cafeName === selectedCafe) {
@@ -26,10 +37,7 @@ export default function MeetUpItem({ info }) {
     <li
       id={info.id}
       className={`min-h-120pxr min-w-300pxr max-w-full rounded-xl ${bgColor} snap-center px-20pxr py-15pxr shadow-meetUp`}
-      onClick={() => {
-        // 선택된 마커의 위치를 상태에 저장
-        useMeetUpStore.setState({ selectedCafe: info.cafeName });
-      }}
+      onClick={handleSelectItem}
     >
       <Link to={`/meetupDetail/${info.id}`}>
         <div

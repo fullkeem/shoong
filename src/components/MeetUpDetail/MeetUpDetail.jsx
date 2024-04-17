@@ -36,12 +36,12 @@ export default function MeetUpDetail() {
         <h3 className="mb-4pxr text-base font-extrabold leading-snug text-primary">
           {eventTitle}
         </h3>
-
         <h4 className="mb-10pxr text-sm font-extrabold leading-tight text-gray-500">
           {cafeName}
         </h4>
 
         <MeetUpDetailItem title="주소" content={address} />
+        <MeetUpDetailItem title="트위터" content={source} />
         <MeetUpDetailItem title="영업기간" content={date} />
       </div>
 

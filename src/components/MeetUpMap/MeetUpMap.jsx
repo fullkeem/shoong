@@ -6,17 +6,17 @@ import Clusterer from './Clusterer';
 
 export default function MeetUpMap({ meetUpData }) {
   const [userLocation, setUserLocation] = useState(null);
+  const selectedLocation = useMeetUpStore((state) => state.selectedLocation);
   const [mapCenter, setMapCenter] = useState({
     lat: 37.556944,
     lng: 126.923917,
   });
 
   useEffect(() => {
-    if (userLocation) {
-      // 사용자의 현재 위치로 지도 중심을 이동합니다.
-      setMapCenter(userLocation);
+    if (selectedLocation) {
+      setMapCenter(selectedLocation);
     }
-  }, [userLocation]);
+  }, [selectedLocation]);
 
   return (
     <Map

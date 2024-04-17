@@ -21,5 +21,3 @@ export default function MeetUp() {
     </div>
   );
 }
-
-// 지도의 마커 클릭 시 해당 밋업 아이템으로 focus
