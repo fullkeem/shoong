@@ -7,6 +7,7 @@ export default function Clusterer({ meetUpData, useMeetUpStore }) {
   const map = useMap();
 
   useEffect(() => {
+    map.pa;
     if (map) {
       mapRef.current = map;
     }

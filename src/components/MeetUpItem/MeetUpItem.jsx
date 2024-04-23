@@ -12,9 +12,9 @@ export default function MeetUpItem({ info }) {
   );
 
   // 클릭 이벤트 핸들러 안에서 선택된 마커의 위치를 업데이트
-  const handleSelectItem = (cluster) => {
+  const handleSelectItem = (lat, lng) => {
     // 위도와 경도를 전역 상태로 업데이트
-    setSelectedLocation({ lat: info.lat, lng: info.lng });
+    setSelectedLocation({ lat: lat, lng: lng });
     useMeetUpStore.setState({ selectedCafe: info.cafeName });
   };
 
@@ -37,7 +37,7 @@ export default function MeetUpItem({ info }) {
     <li
       id={info.id}
       className={`min-h-120pxr min-w-300pxr max-w-full rounded-xl ${bgColor} snap-center px-20pxr py-15pxr shadow-meetUp`}
-      onClick={handleSelectItem}
+      onClick={() => handleSelectItem(info.lat, info.lng)}
     >
       <Link to={`/meetupDetail/${info.id}`}>
         <div

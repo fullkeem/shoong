@@ -1,7 +1,7 @@
 import { searchStore } from '@/store/store';
 import MeetUpItem from '../MeetUpItem/MeetUpItem';
 
-export default function MeetUpItemContainer({ meetUpData, mapStyle }) {
+export default function MeetUpItemContainer({ meetUpData, containerStyle }) {
   const { search } = searchStore();
   const searchText = search?.toLowerCase();
   const searchResult = searchText
@@ -11,10 +11,9 @@ export default function MeetUpItemContainer({ meetUpData, mapStyle }) {
       })
     : meetUpData;
 
-  console.log(searchResult);
   return (
     <ul
-      className={`${mapStyle} absolute bottom-3 z-20 flex w-full snap-x  gap-4 rounded-xl`}
+      className={`${containerStyle} absolute bottom-3 z-20 flex w-full snap-x gap-4 rounded-xl`}
     >
       {searchResult.map((item) => {
         return <MeetUpItem key={item.id} info={item} />;

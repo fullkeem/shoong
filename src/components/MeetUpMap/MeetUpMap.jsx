@@ -1,10 +1,10 @@
+import Clusterer from './Clusterer';
 import UserLocation from './UserLocation';
 import { useEffect, useState } from 'react';
 import { useMeetUpStore } from '@/store/store';
 import { Map, ZoomControl } from 'react-kakao-maps-sdk';
-import Clusterer from './Clusterer';
 
-export default function MeetUpMap({ meetUpData }) {
+export default function MeetUpMap({ meetUpData, mapStyle }) {
   const [userLocation, setUserLocation] = useState(null);
   const selectedLocation = useMeetUpStore((state) => state.selectedLocation);
   const [mapCenter, setMapCenter] = useState({
@@ -12,11 +12,16 @@ export default function MeetUpMap({ meetUpData }) {
     lng: 126.923917,
   });
 
+  console.log(selectedLocation);
+
   useEffect(() => {
-    if (selectedLocation) {
+    if (userLocation) {
+      // 사용자의 현재 위치로 지도 중심을 이동합니다.
+      setMapCenter(userLocation);
+    } else if (selectedLocation) {
       setMapCenter(selectedLocation);
     }
-  }, [selectedLocation]);
+  }, [selectedLocation, setMapCenter, userLocation]);
 
   return (
     <Map
@@ -27,20 +32,18 @@ export default function MeetUpMap({ meetUpData }) {
     >
       <ZoomControl />
       <Clusterer meetUpData={meetUpData} useMeetUpStore={useMeetUpStore} />
-      {userLocation && (
-        <UserLocation
-          position={userLocation}
-          setMapCenter={setMapCenter}
-          setUserLocation={setUserLocation}
-          image={{
-            src: '/icons/marker.svg',
-            size: { width: 40, height: 40 },
-            options: {
-              alt: '내 위치',
-            },
-          }}
-        />
-      )}
+      <UserLocation
+        position={userLocation}
+        setMapCenter={setMapCenter}
+        setUserLocation={setUserLocation}
+        image={{
+          src: '/icons/marker.svg',
+          size: { width: 40, height: 40 },
+          options: {
+            alt: '내 위치',
+          },
+        }}
+      />
     </Map>
   );
 }
