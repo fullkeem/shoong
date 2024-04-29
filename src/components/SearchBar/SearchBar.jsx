@@ -39,7 +39,10 @@ export default function SearchBar({ name, placeholder, bgStyle }) {
   }, [search]);
 
   return (
-    <form className="absolute left-5 top-2 z-20 mx-4 inline-flex w-4/5 flex-row items-start justify-start gap-2 rounded-[30px] bg-white px-4  py-3 shadow-meetUp desktop:left-0 desktop:top-0 desktop:mx-0 desktop:w-full desktop:rounded-none">
+    <form
+      className={`${bgStyle} mx-4 inline-flex w-4/5 flex-row items-start justify-start gap-2 rounded-[30px] px-4 py-1.5`}
+      style={{ maxWidth: '1280px' }}
+    >
       <label htmlFor={name}>
         <BsSearch className="h-6" />
       </label>
