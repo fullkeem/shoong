@@ -10,7 +10,7 @@ export default function MeetUp() {
       <div className="@desktop:hidden block h-full w-full">
         <MeetUpMobile meetUpData={meetUpData} />
       </div>
-      <div className="@desktop:block hidden">
+      <div className="@desktop:block  @desktop:w-full @desktop:h-screen-meetUp hidden">
         <MeetUpDesktop meetUpData={meetUpData} />
       </div>
     </div>

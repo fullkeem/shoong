@@ -36,7 +36,7 @@ export default function MeetUpItem({ info }) {
   return (
     <li
       id={info.id}
-      className={`min-h-120pxr w-300pxr rounded-xl desktop:w-full ${bgColor} snap-center px-20pxr py-15pxr shadow-meetUp`}
+      className={`@desktop:w-11/12 @desktop:content-center @desktop:mx-auto min-h-120pxr w-300pxr rounded-xl  ${bgColor} snap-center px-20pxr py-15pxr shadow-meetUp`}
       onClick={() => handleSelectItem(info.lat, info.lng)}
     >
       <Link to={`/meetupDetail/${info.id}`}>

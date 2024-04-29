@@ -5,16 +5,21 @@ import MeetUpItemContainer from '@/components/MeetUpItemContainer/MeetUpItemCont
 export default function MeetUpDesktop({ meetUpData }) {
   return (
     <>
-      <div className="h-full flex-grow">
-        <MeetUpMap meetUpData={meetUpData} />
-      </div>
-      <div className="relative flex h-full w-1/3 flex-col overflow-hidden border-t-gray-50 bg-white">
-        <SearchBar
-          name={'mapSearch'}
-          placeholder={'장소,아티스트 이름'}
-          bgStyle={'w-full rounded-none'}
-        />
-        <MeetUpItemContainer meetUpData={meetUpData} />
+      <div className="flex h-full w-full flex-row">
+        <div className="relative flex h-full w-1/4 flex-row border-t-gray-50">
+          <SearchBar
+            name={'mapSearch'}
+            placeholder={'장소,아티스트 이름'}
+            bgStyle={'@desktop:h-1/6 w-full rounded-none'}
+          />
+          <MeetUpItemContainer
+            meetUpData={meetUpData}
+            desktopStyle={'@desktop:top-60pxr'}
+          />
+        </div>
+        <div className="flex-grow">
+          <MeetUpMap meetUpData={meetUpData} />
+        </div>
       </div>
     </>
   );

@@ -32,7 +32,7 @@ export default function MeetUpMap({ meetUpData, mapStyle }) {
     >
       <ZoomControl />
       <Clusterer meetUpData={meetUpData} useMeetUpStore={useMeetUpStore} />
-      <UserLocation
+      {/* <UserLocation
         position={userLocation}
         setMapCenter={setMapCenter}
         setUserLocation={setUserLocation}
@@ -43,7 +43,7 @@ export default function MeetUpMap({ meetUpData, mapStyle }) {
             alt: '내 위치',
           },
         }}
-      />
+      /> */}
     </Map>
   );
 }
