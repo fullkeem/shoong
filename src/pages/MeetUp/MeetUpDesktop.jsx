@@ -10,7 +10,7 @@ export default function MeetUpDesktop({ meetUpData }) {
           <SearchBar
             name={'mapSearch'}
             placeholder={'장소,아티스트 이름'}
-            bgStyle={'@desktop:h-1/6 w-full rounded-none'}
+            bgStyle={'mx-0 h-50pxr w-full rounded-none bg-white'}
           />
           <MeetUpItemContainer
             meetUpData={meetUpData}
