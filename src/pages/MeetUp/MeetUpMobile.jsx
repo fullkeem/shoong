@@ -16,7 +16,7 @@ export default function MeetUpMobile({ meetUpData }) {
           mapStyle={'overflow-auto touch-pan-x draggable h-full'}
         />
       </div>
-      <div className="h-full flex-grow">
+      <div className="h-full w-full flex-grow">
         <MeetUpMap meetUpData={meetUpData} />
       </div>
     </>
