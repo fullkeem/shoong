@@ -33,7 +33,6 @@ export default function MeetUpDetail() {
       <DetailHeader title="자세히" isBottomSheet={undefined} />
       <MeetupCarousel />
       <div className="mt-6 grid grid-cols-1 gap-2 @desktop:grid-cols-2 @desktop:grid-rows-2">
-        {/*첫번째 */}
         <div className="mx-20pxr mb-20pxr min-h-120pxr min-w-320pxr rounded-xl bg-white px-20pxr py-15pxr shadow">
           <h3 className="mb-4pxr text-base font-extrabold leading-snug text-primary">
             {eventTitle}
@@ -46,7 +45,7 @@ export default function MeetUpDetail() {
           <MeetUpDetailItem title="트위터" content={source} />
           <MeetUpDetailItem title="영업기간" content={date} />
         </div>
-        {/*두ㅡ번째 */}
+
         <div className="mx-20pxr flex flex-col rounded-xl bg-white shadow">
           <MeetUpDetailItemContainer
             title="GIFT"
@@ -73,14 +72,12 @@ export default function MeetUpDetail() {
             }
           />
         </div>
-        {/*지도 */}
+
         <div className="mx-20pxr mt-6 flex h-300pxr flex-col rounded-xl shadow">
           <MeetUpDetailMap lat={lat} lng={lng} cafeName={cafeName} />
         </div>
-        {/*댓글 */}
-        <div className="">
-          <CommentContainer id={id} commentList={comments} />
-        </div>
+
+        <CommentContainer id={id} commentList={comments} />
       </div>
     </div>
   );
