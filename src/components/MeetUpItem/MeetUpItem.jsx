@@ -15,14 +15,20 @@ export default function MeetUpItem({ info }) {
   const handleSelectItem = (lat, lng) => {
     // 위도와 경도를 전역 상태로 업데이트
     setSelectedLocation({ lat: lat, lng: lng });
+    // 함수형 업데이트를 사용하여 selectedCafe 상태 업데이트
     useMeetUpStore.setState({ selectedCafe: info.cafeName });
   };
 
   useEffect(() => {
     if (info.cafeName === selectedCafe) {
-      document.getElementById(info.id).scrollIntoView({
+      const element = document.getElementById(info.id);
+      // 데스크 탑 환경일 때 true
+      const isDesktop = window.matchMedia('(min-width: 1080px)').matches;
+
+      element.scrollIntoView({
         behavior: 'smooth',
-        block: 'center',
+        // 데스크탑이면 세로 스크롤 중앙, 아니면 가깝게
+        block: isDesktop ? 'center' : 'nearest',
         inline: 'center',
       });
     }
@@ -36,7 +42,7 @@ export default function MeetUpItem({ info }) {
   return (
     <li
       id={info.id}
-      className={`@desktop:w-11/12 @desktop:content-center @desktop:mx-auto min-h-120pxr w-300pxr rounded-xl  ${bgColor} snap-center px-20pxr py-15pxr shadow-meetUp`}
+      className={`min-h-120pxr w-300pxr rounded-xl @desktop:mx-auto @desktop:w-11/12 @desktop:content-center  ${bgColor} snap-center px-20pxr py-15pxr shadow-meetUp`}
       onClick={() => handleSelectItem(info.lat, info.lng)}
     >
       <Link to={`/meetupDetail/${info.id}`}>

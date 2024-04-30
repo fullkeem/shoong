@@ -13,7 +13,7 @@ export default function MeetUpItemContainer({ meetUpData, desktopStyle }) {
 
   return (
     <ul
-      className={`${desktopStyle} @desktop:flex-grow @desktop:bottom-0 @desktop:flex-col absolute bottom-3 z-20 flex w-full touch-pan-x snap-both gap-4 overflow-auto rounded-xl`}
+      className={`${desktopStyle} absolute bottom-3 z-20 flex w-full touch-pan-x snap-both gap-4 overflow-auto rounded-xl @desktop:touch-pan-y @desktop:flex-col`}
     >
       {searchResult.map((item) => {
         return <MeetUpItem key={item.id} info={item} />;

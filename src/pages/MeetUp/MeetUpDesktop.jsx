@@ -14,7 +14,7 @@ export default function MeetUpDesktop({ meetUpData }) {
           />
           <MeetUpItemContainer
             meetUpData={meetUpData}
-            desktopStyle={'@desktop:top-60pxr'}
+            desktopStyle={'top-60pxr'}
           />
         </div>
         <div className="flex-grow">
