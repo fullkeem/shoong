@@ -142,7 +142,7 @@ export default function ExchangeArticle({
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <div className="h-11 w-10  ">
+                  <div className="h-11 w-10">
                     <img
                       className="h-full w-full rounded-full border-2 object-cover"
                       src={`https://shoong.pockethost.io/api/files/users/${user.id}/${user.avatar}`}

@@ -12,6 +12,7 @@ export default function PhocaImg({
         src={phocaImgSrc}
         className="h-full w-full rounded-xl object-cover"
         alt={phocaImgAlt}
+        loading="lazy"
       />
       <div className="absolute bottom-2 right-4">{children}</div>
       <WaterMark />

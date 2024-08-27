@@ -34,7 +34,7 @@ export default function PhotoCardInfo({ photoCardData }) {
       <PhocaImg
         phocaImgSrc={`https://shoong.pockethost.io/api/files/photoCards/${id}/${cardImg}`}
         phocaImgAlt={`${title} 포토카드`}
-        imgClass={'w-full mt-3'}
+        imgClass={'w-10/12 mt-3'}
       />
     </div>
   );
