@@ -1,5 +1,4 @@
 import Clusterer from './Clusterer';
-import UserLocation from './UserLocation';
 import { useEffect, useState } from 'react';
 import { useMeetUpStore } from '@/store/store';
 import { Map, ZoomControl } from 'react-kakao-maps-sdk';
@@ -12,7 +11,26 @@ export default function MeetUpMap({ meetUpData, mapStyle }) {
     lng: 126.923917,
   });
 
-  console.log(selectedLocation);
+  // 비동기적으로 Kakao Map SDK 로드
+  useEffect(() => {
+    const loadKakaoMapSDK = () => {
+      return new Promise((resolve) => {
+        const existingScript = document.getElementById('kakao-map-sdk');
+        if (!existingScript) {
+          const script = document.createElement('script');
+          script.id = 'kakao-map-sdk';
+          script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.REACT_APP_KAKAO_MAP_API_KEY}&libraries=services,clusterer,drawing`;
+          script.async = true;
+          script.onload = resolve;
+          document.head.appendChild(script);
+        } else {
+          resolve();
+        }
+      });
+    };
+
+    loadKakaoMapSDK();
+  }, []);
 
   useEffect(() => {
     if (userLocation) {
