@@ -10,6 +10,7 @@ export default function MeetUpMap({ meetUpData, mapStyle }) {
     lat: 37.556944,
     lng: 126.923917,
   });
+  const [isSdkLoaded, setIsSdkLoaded] = useState(false);
 
   // 비동기적으로 Kakao Map SDK 로드
   useEffect(() => {
@@ -24,6 +25,7 @@ export default function MeetUpMap({ meetUpData, mapStyle }) {
           script.onload = resolve;
           document.head.appendChild(script);
         } else {
+          setIsSdkLoaded(true);
           resolve();
         }
       });
@@ -40,6 +42,10 @@ export default function MeetUpMap({ meetUpData, mapStyle }) {
       setMapCenter(selectedLocation);
     }
   }, [selectedLocation, setMapCenter, userLocation]);
+
+  if (!isSdkLoaded) {
+    return <div>Loading Map...</div>; // SDK가 로드될 때까지 로딩 메시지 표시
+  }
 
   return (
     <Map
