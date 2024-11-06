@@ -19,7 +19,7 @@ export default function MeetUpMap({ meetUpData, mapStyle }) {
         if (!existingScript) {
           const script = document.createElement('script');
           script.id = 'kakao-map-sdk';
-          script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.KAKAO_MAP_API_KEY}&libraries=services,clusterer,drawing`;
+          script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${import.meta.env.VITE_KAKAO_MAP_API_KEY}&libraries=services,clusterer,drawing`;
           script.async = true;
           script.onload = resolve;
           document.head.appendChild(script);
