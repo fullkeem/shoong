@@ -16,15 +16,12 @@ export default function ExchangeList({ photoCardData }) {
   const { init } = isLogin();
   const userInfo = localStorage.getItem('auth');
   const loggedInUser = userInfo ? JSON.parse(userInfo) : null;
-  const slang = useStore(slangStore).slang;
+  const { slangRegex } = useStore(slangStore);
 
   // 비속어 필터링 함수
   const handleSlangFiltering = (text) => {
-    const containsSlang = slang.some((word) => text.includes(word));
-    if (containsSlang) {
-      return true;
-    }
-    return false;
+    // 정규식 한 번 테스트로 전체 비속어 포함 여부 확인
+    return slangRegex.filter(text);
   };
 
   useEffect(() => {
@@ -63,7 +60,6 @@ export default function ExchangeList({ photoCardData }) {
       <NumberOfExchangeList exchangeListData={exchangeListData} />
       <div className="mx-auto mt-4 w-10/12">
         <ExchangeEdit
-          slang={slang}
           loginStatus={init}
           loginUser={loggedInUser}
           photoCardData={photoCardData}
@@ -72,7 +68,6 @@ export default function ExchangeList({ photoCardData }) {
           handleSlangFiltering={handleSlangFiltering}
         />
         <ExchangeArticle
-          slang={slang}
           users={users}
           loginStatus={init}
           loginUser={loggedInUser}

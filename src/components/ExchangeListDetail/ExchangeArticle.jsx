@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import pb from '@/api/pocketbase';
-import Button from '../Button/Button';
+import { timeSince } from '@/utils/timeSince';
 import { GoTrash, GoPencil } from 'react-icons/go';
 import ConfirmationModal from '../ConfirmationModal/ConfirmationModal';
-import { timeSince } from '@/utils/timeSince';
 
 export default function ExchangeArticle({
   users,
