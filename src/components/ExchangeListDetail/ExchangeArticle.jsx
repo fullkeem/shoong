@@ -3,6 +3,7 @@ import pb from '@/api/pocketbase';
 import Button from '../Button/Button';
 import { GoTrash, GoPencil } from 'react-icons/go';
 import ConfirmationModal from '../ConfirmationModal/ConfirmationModal';
+import { timeSince } from '@/utils/timeSince';
 
 export default function ExchangeArticle({
   users,
@@ -92,34 +93,6 @@ export default function ExchangeArticle({
     usersById[user.id] = user;
   });
 
-  // 날짜 차이를 계산하는 함수
-  function timeSince(dateToObject) {
-    const date = new Date(Date.parse(dateToObject));
-    const seconds = Math.floor((new Date() - date) / 1000);
-
-    let interval = seconds / 31536000;
-    if (interval > 1) {
-      return Math.floor(interval) + '년 전';
-    }
-    interval = seconds / 2592000;
-    if (interval > 1) {
-      return Math.floor(interval) + '달 전';
-    }
-    interval = seconds / 86400;
-    if (interval > 1) {
-      return Math.floor(interval) + '일 전';
-    }
-    interval = seconds / 3600;
-    if (interval > 1) {
-      return Math.floor(interval) + '시간 전';
-    }
-    interval = seconds / 60;
-    if (interval > 1) {
-      return Math.floor(interval) + '분 전';
-    }
-    return '방금 전';
-  }
-
   return (
     <>
       <ul className="mt-5">
@@ -181,20 +154,20 @@ export default function ExchangeArticle({
                     onChange={(e) => setEditingContent(e.target.value)}
                   />
                   <div className="mt-2 flex justify-end gap-2">
-                    <Button
+                    <button
                       type="submit"
-                      bgClassName="bg-primary"
+                      className="w-3/12 rounded-lg bg-secondary py-3 text-white hover:bg-primary focus:bg-primary focus:outline-none"
                       onClick={() => handleEditSubmit(exchangeData.id)}
                     >
                       저장
-                    </Button>
-                    <Button
+                    </button>
+                    <button
                       type="button"
-                      bgClassName="bg-gray-400"
+                      className="w-3/12 rounded-lg bg-contentTertiary py-3 text-white hover:bg-contentSecondary focus:bg-contentSecondary focus:outline-none"
                       onClick={handleEditCancel}
                     >
                       취소
-                    </Button>
+                    </button>
                   </div>
                 </div>
               ) : (
@@ -203,16 +176,17 @@ export default function ExchangeArticle({
                 </div>
               )}
               <div className="mt-4 flex items-center justify-between">
-                <div className="rounded-3xl border border-gray-700 px-2 py-1 text-xs text-gray-700">
+                <div className="rounded-3xl border border-gray-700 px-3 py-2 text-sm text-gray-700">
                   {exchangeData.status}
                 </div>
-                <Button
-                  type="button"
-                  bgClassName="bg-primary"
-                  customClassNames="hover:bg-indigo-700 focus:bg-indigo-700 focus:outline-none"
-                >
-                  대화하기
-                </Button>
+                {!isUserTheWriter && (
+                  <button
+                    type="button"
+                    className="w-4/12 rounded-lg bg-secondary py-3 text-white hover:bg-primary focus:bg-primary focus:outline-none"
+                  >
+                    대화하기
+                  </button>
+                )}
               </div>
             </li>
           );
