@@ -163,7 +163,7 @@ export default function ExchangeArticle({
                     </button>
                     <button
                       type="button"
-                      className="w-3/12 rounded-lg bg-contentTertiary py-3 text-white hover:bg-contentSecondary focus:bg-contentSecondary focus:outline-none"
+                      className="buttonStyle w-3/12 bg-contentTertiary hover:bg-contentSecondary focus:bg-contentSecondary "
                       onClick={handleEditCancel}
                     >
                       취소
@@ -182,7 +182,7 @@ export default function ExchangeArticle({
                 {!isUserTheWriter && (
                   <button
                     type="button"
-                    className="w-4/12 rounded-lg bg-secondary py-3 text-white hover:bg-primary focus:bg-primary focus:outline-none"
+                    className="buttonStyle w-4/12 bg-secondary hover:bg-primary focus:bg-primary"
                   >
                     대화하기
                   </button>

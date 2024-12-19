@@ -128,26 +128,21 @@ export default function ExchangeEdit({
                 {comment.length}/150
               </span>
               <div className="mt-2 flex items-center justify-end">
-                <div className="flex space-x-2">
-                  <Button
+                <div className="flex w-full items-center justify-end space-x-2">
+                  <button
                     type="submit"
-                    isDisabled={true}
-                    bgClassName="buttonStyle bg-primary hover:bg-indigo-700"
-                    textColorClassName="text-white"
-                    customClassNames="focus:outline-none"
+                    className="buttonStyle w-3/12 bg-secondary hover:bg-primary focus:bg-primary"
                     onClick={handleSubmit}
                   >
                     저장
-                  </Button>
-                  <Button
+                  </button>
+                  <button
                     type="button"
-                    bgClassName="bg-gray-400 hover:bg-gray-500"
-                    textColorClassName="text-white"
-                    customClassNames="focus:outline-none"
+                    className="buttonStyle w-3/12 bg-contentTertiary hover:bg-contentSecondary focus:bg-contentSecondary"
                     onClick={handleCancel}
                   >
                     취소
-                  </Button>
+                  </button>
                 </div>
               </div>
             </div>
