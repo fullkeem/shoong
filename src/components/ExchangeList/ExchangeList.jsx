@@ -1,7 +1,6 @@
 import pb from '@/api/pocketbase';
-import { useStore } from 'zustand';
+import { isLogin } from '@/store/store';
 import { useState, useEffect } from 'react';
-import { isLogin, slangStore } from '@/store/store';
 import DetailHeader from '../DetailHeader/DetailHeader';
 import ExchangeEdit from '../ExchangeListDetail/ExchangeEdit';
 import PhotoCardInfo from '../ExchangeListDetail/PhotoCardInfo';
@@ -16,13 +15,6 @@ export default function ExchangeList({ photoCardData }) {
   const { init } = isLogin();
   const userInfo = localStorage.getItem('auth');
   const loggedInUser = userInfo ? JSON.parse(userInfo) : null;
-  const { slangRegex } = useStore(slangStore);
-
-  // 비속어 필터링 함수
-  const handleSlangFiltering = (text) => {
-    // 정규식 한 번 테스트로 전체 비속어 포함 여부 확인
-    return slangRegex.filter(text);
-  };
 
   useEffect(() => {
     // 교환글에서 작성자들의 id들을 추출
@@ -65,7 +57,6 @@ export default function ExchangeList({ photoCardData }) {
           photoCardData={photoCardData}
           exchangeListData={exchangeListData}
           setExchangeListData={setExchangeListData}
-          handleSlangFiltering={handleSlangFiltering}
         />
         <ExchangeArticle
           users={users}
@@ -73,7 +64,6 @@ export default function ExchangeList({ photoCardData }) {
           loginUser={loggedInUser}
           exchangeListData={exchangeListData}
           setExchangeListData={setExchangeListData}
-          handleSlangFiltering={handleSlangFiltering}
         />
       </div>
     </>

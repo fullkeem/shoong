@@ -1,8 +1,6 @@
 // 상태 관리
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import SLANG_WORDS from '@/assets/slangList';
-import createSlangRegex from '@/utils/filteringSlang';
 
 // 내 최애 정보 전역으로 관리 + 로컬스토리지에 저장
 export const globalState = create(
@@ -97,18 +95,18 @@ export const meetUpDataStore = create((set) => ({
   setMeetUpData: (newData) => set({ meetUpData: newData }),
 }));
 
-// 비속어 필터링
-const slangRegax = createSlangRegex(SLANG_WORDS);
+// // 비속어 필터링
+// const slangRegax = createSlangRegex(SLANG_WORDS);
 
-export const slangStore = create((set) => ({
-  slang: SLANG_WORDS,
-  slangRegax, // 정규식 저장
-  setSlang: (newSlang) =>
-    set((state) => ({
-      slang: [...state.slang, newSlang],
-      slangRegex: createSlangRegex([...state.slang, newSlang]),
-    })),
-}));
+// export const slangStore = create((set) => ({
+//   slang: SLANG_WORDS,
+//   slangRegax, // 정규식 저장
+//   setSlang: (newSlang) =>
+//     set((state) => ({
+//       slang: [...state.slang, newSlang],
+//       slangRegex: createSlangRegex([...state.slang, newSlang]),
+//     })),
+// }));
 
 export const selectedCardStore = create((set) => ({
   selectedCard: null,
