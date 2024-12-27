@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import pb from '@/api/pocketbase';
-import Button from '../Button/Button';
 import { useNavigate } from 'react-router-dom';
+import containsProfanity from '@/libs/filter';
 import ConfirmationModal from '../ConfirmationModal/ConfirmationModal';
 
 export default function ExchangeEdit({
@@ -10,7 +10,6 @@ export default function ExchangeEdit({
   photoCardData,
   exchangeListData,
   setExchangeListData,
-  handleSlangFiltering,
 }) {
   const [comment, setComment] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -51,8 +50,9 @@ export default function ExchangeEdit({
       return;
     }
 
-    if (handleSlangFiltering(comment)) {
-      showModal('비속어가 포홤된 글은 작성할 수 없습니다');
+    // 비속어 필터링 체크
+    if (containsProfanity(comment)) {
+      showModal('비속어가 포함된 글은 작성할 수 없습니다');
       return;
     }
 
@@ -103,7 +103,7 @@ export default function ExchangeEdit({
     <>
       <form
         onSubmit={handleSubmit}
-        className="mx-auto overflow-hidden rounded-xl bg-white p-5 shadow-meetUp"
+        className="mx-auto  overflow-hidden rounded-xl bg-white p-5 shadow-meetUp"
       >
         <fieldset>
           <legend className="sr-only">교환글 작성 폼</legend>

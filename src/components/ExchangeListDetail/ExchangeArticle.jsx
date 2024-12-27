@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import pb from '@/api/pocketbase';
 import { timeSince } from '@/utils/timeSince';
+import containsProfanity from '@/libs/filter';
 import { GoTrash, GoPencil } from 'react-icons/go';
 import ConfirmationModal from '../ConfirmationModal/ConfirmationModal';
 
@@ -10,7 +11,6 @@ export default function ExchangeArticle({
   loginStatus,
   exchangeListData,
   setExchangeListData,
-  handleSlangFiltering,
 }) {
   const [isEditing, setIsEditing] = useState(null);
   const [modalMessage, setModalMessage] = useState('');
@@ -57,8 +57,9 @@ export default function ExchangeArticle({
 
   // 수정 저장
   const handleEditSubmit = async (exchangeId) => {
-    if (handleSlangFiltering(editingContent)) {
-      showModal('비속어가 포홤된 글은 작성할 수 없습니다');
+    // 비속어 필터링 체크
+    if (containsProfanity(editingContent)) {
+      showModal('비속어가 포함된 글은 작성할 수 없습니다');
       return;
     }
     try {
@@ -110,13 +111,13 @@ export default function ExchangeArticle({
           return (
             <li
               key={exchangeData.id}
-              className="mx-auto mb-3 overflow-hidden rounded-lg bg-white p-5 shadow-lg"
+              className="p-5 mx-auto mb-3 overflow-hidden bg-white rounded-lg shadow-lg"
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <div className="h-11 w-10">
+                  <div className="w-10 h-11">
                     <img
-                      className="h-full w-full rounded-full border-2 object-cover"
+                      className="object-cover w-full h-full border-2 rounded-full"
                       src={`https://shoong.pockethost.io/api/files/users/${user.id}/${user.avatar}`}
                       alt={`${user.username} 프로필 사진`}
                       aria-hidden="true"
@@ -135,11 +136,11 @@ export default function ExchangeArticle({
                 {isUserTheWriter && (
                   <div className="flex gap-1">
                     <GoPencil
-                      className="mr-1 h-6 w-6 cursor-pointer text-primary"
+                      className="w-6 h-6 mr-1 cursor-pointer text-primary"
                       onClick={() => handleEdit(exchangeData)}
                     />
                     <GoTrash
-                      className="mr-1 h-6 w-6 cursor-pointer text-primary"
+                      className="w-6 h-6 mr-1 cursor-pointer text-primary"
                       onClick={() => handleDelete(exchangeData.id)}
                     />
                   </div>
@@ -148,21 +149,21 @@ export default function ExchangeArticle({
               {isEditing === exchangeData.id ? (
                 <div className="mt-3">
                   <textarea
-                    className="w-full rounded border px-2 py-1 text-gray-700"
+                    className="w-full px-2 py-1 text-gray-700 border rounded"
                     value={editingContent}
                     onChange={(e) => setEditingContent(e.target.value)}
                   />
-                  <div className="mt-2 flex justify-end gap-2">
+                  <div className="flex justify-end gap-2 mt-2">
                     <button
                       type="submit"
-                      className="w-3/12 rounded-lg bg-secondary py-3 text-white hover:bg-primary focus:bg-primary focus:outline-none"
+                      className="w-3/12 py-3 text-white rounded-lg bg-secondary hover:bg-primary focus:bg-primary focus:outline-none"
                       onClick={() => handleEditSubmit(exchangeData.id)}
                     >
                       저장
                     </button>
                     <button
                       type="button"
-                      className="buttonStyle w-3/12 bg-contentTertiary hover:bg-contentSecondary focus:bg-contentSecondary "
+                      className="w-3/12 buttonStyle bg-contentTertiary hover:bg-contentSecondary focus:bg-contentSecondary "
                       onClick={handleEditCancel}
                     >
                       취소
@@ -174,14 +175,14 @@ export default function ExchangeArticle({
                   <p className="text-gray-700">{exchangeData.description}</p>
                 </div>
               )}
-              <div className="mt-4 flex items-center justify-between">
-                <div className="rounded-3xl border border-gray-700 px-3 py-2 text-sm text-gray-700">
+              <div className="flex items-center justify-between mt-4">
+                <div className="px-3 py-2 text-sm text-gray-700 border border-gray-700 rounded-3xl">
                   {exchangeData.status}
                 </div>
                 {!isUserTheWriter && (
                   <button
                     type="button"
-                    className="buttonStyle w-4/12 bg-secondary hover:bg-primary focus:bg-primary"
+                    className="w-4/12 buttonStyle bg-secondary hover:bg-primary focus:bg-primary"
                   >
                     대화하기
                   </button>
@@ -195,7 +196,6 @@ export default function ExchangeArticle({
         isOpen={isModalOpen}
         onClose={closeModal}
         message={modalMessage}
-        cancelButtonText="취소"
         confirmButtonText="확인"
       />
     </>
