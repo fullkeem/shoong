@@ -4,7 +4,7 @@ import containsProfanity from '@/libs/filter';
 import { GoTrash, GoPencil } from 'react-icons/go';
 import useUserListStore from '@/store/userListStore';
 import useExchangeApi from '@/api/exchange/exchangeApi';
-import ConfirmationModal from '../ConfirmationModal/ConfirmationModal';
+import ConfirmationModal from '@/components/ConfirmationModal/ConfirmationModal';
 
 export default function ExchangeArticle({
   loginUser,

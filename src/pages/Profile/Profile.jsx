@@ -3,7 +3,7 @@ import ProfileItemContainer from '@/components/ProfileItemContainer/ProfileItemC
 import NavigationTile from '@/components/NavigationTile/NavigationTile';
 import ProfileFooter from '@/components/ProfileFooter/ProfileFooter';
 import ProfileHeader from '@/components/ProfileTitle/ProfileHeader';
-import ExchangeStatus from '@/components/ExchangeStatus/ExchangeStatus';
+import ExchangeStatus from '@/components/ExchangeList/ExchangeStatus/ExchangeStatus';
 import ProfileSetting from '../ProfileSetting/ProfileSetting';
 
 export default function Profile() {
@@ -26,12 +26,12 @@ export default function Profile() {
             <NavigationTile
               to="/"
               text="가이드"
-              className=" mt-10 border-b-2 border-t-4 border-gray-200"
+              className="mt-10 border-b-2 border-t-4 border-gray-200 "
             />
             <NavigationTile
               to="/informUs"
               text="제보하기"
-              className=" border-b-4 border-gray-200 "
+              className="border-b-4 border-gray-200 "
             />
           </div>
         </div>
@@ -50,12 +50,12 @@ export default function Profile() {
           <NavigationTile
             to="/"
             text="가이드"
-            className=" mt-10 border-b-2 border-t-4 border-gray-200"
+            className="mt-10 border-b-2 border-t-4 border-gray-200 "
           />
           <NavigationTile
             to="/informUs"
             text="제보하기"
-            className=" border-b-4 border-gray-200 "
+            className="border-b-4 border-gray-200 "
           />
           <ProfileFooter />
         </div>

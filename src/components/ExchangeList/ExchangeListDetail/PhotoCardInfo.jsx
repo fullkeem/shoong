@@ -1,7 +1,7 @@
-import PhocaImg from '../PhocaItem/PhocaImg';
-import PhocaTitle from '../PhocaItem/PhocaTitle';
-import ArtistInfo from '../PhocaItem/ArtistInfo';
-import ArtistLogo from '../PhocaItem/ArtistLogo';
+import PhocaImg from '@/components/PhocaItem/PhocaImg';
+import PhocaTitle from '@/components/PhocaItem/PhocaTitle';
+import ArtistInfo from '@/components/PhocaItem/ArtistInfo';
+import ArtistLogo from '@/components/PhocaItem/ArtistLogo';
 
 export default function PhotoCardInfo({ photoCardData }) {
   const { cardImg, groupName, id, label, logoImage, memberName, title } =
@@ -27,7 +27,7 @@ export default function PhotoCardInfo({ photoCardData }) {
           title={title}
           titleClass={'mt-1 self-start text-xl font-bold '}
         />
-        <span className=" mt-3 self-start rounded-2xl border border-neutral-800 px-4 py-1pxr text-sm">
+        <span className="mt-3 self-start rounded-2xl border border-neutral-800 px-4 py-1pxr text-sm">
           {label}
         </span>
       </div>
