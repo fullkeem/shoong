@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import pb from '@/api/pocketbase';
-import Button from '../Button/Button';
 import { useNavigate } from 'react-router-dom';
+import containsProfanity from '@/libs/filter';
 import ConfirmationModal from '../ConfirmationModal/ConfirmationModal';
 
 export default function ExchangeEdit({
@@ -10,7 +10,6 @@ export default function ExchangeEdit({
   photoCardData,
   exchangeListData,
   setExchangeListData,
-  handleSlangFiltering,
 }) {
   const [comment, setComment] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -39,7 +38,7 @@ export default function ExchangeEdit({
     if (modalMessage === '로그인이 필요한 서비스입니다.') {
       navigate('/login');
     }
-    closeModal();
+    setIsModalOpen(false);
   };
 
   const handleSubmit = async (event) => {
@@ -51,8 +50,9 @@ export default function ExchangeEdit({
       return;
     }
 
-    if (handleSlangFiltering(comment)) {
-      showModal('비속어가 포홤된 글은 작성할 수 없습니다');
+    // 비속어 필터링 체크
+    if (containsProfanity(comment)) {
+      showModal('비속어가 포함된 글은 작성할 수 없습니다');
       return;
     }
 
@@ -103,11 +103,11 @@ export default function ExchangeEdit({
     <>
       <form
         onSubmit={handleSubmit}
-        className="mx-auto overflow-hidden rounded-xl bg-white p-5 shadow-meetUp"
+        className="p-5 mx-auto overflow-hidden bg-white rounded-xl shadow-meetUp"
       >
         <fieldset>
           <legend className="sr-only">교환글 작성 폼</legend>
-          <div className="flex w-full items-start space-x-4">
+          <div className="flex items-start w-full space-x-4">
             <div className="relative flex-1">
               <label htmlFor="exchangeArticle" className="sr-only">
                 교환 글을 입력하세요
@@ -115,7 +115,7 @@ export default function ExchangeEdit({
               <textarea
                 id="exchangeArticle"
                 name="exchangeArticle"
-                className="relative h-60pxr w-full rounded border border-gray-300 p-2 text-sm"
+                className="relative w-full p-2 text-sm border border-gray-300 rounded h-60pxr"
                 placeholder="코멘트를 입력하세요"
                 rows={3}
                 maxLength={150}
@@ -124,30 +124,24 @@ export default function ExchangeEdit({
                 onKeyDown={handleKeyDown}
                 aria-required="true"
               ></textarea>
-              <span className="absolute bottom-60pxr right-2 text-xs text-gray-500">
+              <span className="absolute text-xs text-gray-500 bottom-60pxr right-2">
                 {comment.length}/150
               </span>
-              <div className="mt-2 flex items-center justify-end">
-                <div className="flex space-x-2">
-                  <Button
+              <div className="flex items-center justify-end mt-2">
+                <div className="flex items-center justify-end w-full space-x-2">
+                  <button
                     type="submit"
-                    isDisabled={true}
-                    bgClassName="buttonStyle bg-primary hover:bg-indigo-700"
-                    textColorClassName="text-white"
-                    customClassNames="focus:outline-none"
-                    onClick={handleSubmit}
+                    className="w-3/12 buttonStyle bg-secondary hover:bg-primary focus:bg-primary"
                   >
                     저장
-                  </Button>
-                  <Button
+                  </button>
+                  <button
                     type="button"
-                    bgClassName="bg-gray-400 hover:bg-gray-500"
-                    textColorClassName="text-white"
-                    customClassNames="focus:outline-none"
+                    className="w-3/12 buttonStyle bg-contentTertiary hover:bg-contentSecondary focus:bg-contentSecondary"
                     onClick={handleCancel}
                   >
                     취소
-                  </Button>
+                  </button>
                 </div>
               </div>
             </div>
