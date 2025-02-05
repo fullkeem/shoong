@@ -1,123 +1,116 @@
 import { useState } from 'react';
-import pb from '@/api/pocketbase';
 import { timeSince } from '@/utils/timeSince';
 import containsProfanity from '@/libs/filter';
 import { GoTrash, GoPencil } from 'react-icons/go';
+import useUserListStore from '@/store/userListStore';
+import useExchangeApi from '@/api/exchange/exchangeApi';
 import ConfirmationModal from '../ConfirmationModal/ConfirmationModal';
 
 export default function ExchangeArticle({
-  users,
   loginUser,
   loginStatus,
   exchangeListData,
   setExchangeListData,
 }) {
-  const [isEditing, setIsEditing] = useState(null);
-  const [modalMessage, setModalMessage] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingContent, setEditingContent] = useState('');
-  let loggedInUserId = '';
-  if (loginStatus === true) loggedInUserId = loginUser.user.id || null;
+  const { users } = useUserListStore((state) => ({
+    users: state.users,
+  }));
 
-  const showModal = (message) => {
-    setModalMessage(message);
-    setIsModalOpen(true);
+  const [modalState, setModalState] = useState({
+    isOpen: false,
+    message: '',
+  });
+
+  const [editingState, setEditingState] = useState({
+    isEditing: null,
+    content: '',
+  });
+  const { deleteExchange, updateExchange } = useExchangeApi();
+
+  const loggedInUserId = loginStatus ? loginUser?.user?.id : '';
+
+  const toggleModal = (message) => {
+    setModalState((prevState) => ({
+      isOpen: !prevState.isOpen,
+      message: message || prevState.message,
+    }));
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
-  // 수정
+  // 수정 시작
   const handleEdit = (exchangeData) => {
-    setIsEditing(exchangeData.id);
-    setEditingContent(exchangeData.description);
+    setEditingState({
+      isEditing: exchangeData.id,
+      content: exchangeData.description,
+    });
   };
 
   // 수정 취소
   const handleEditCancel = () => {
-    setIsEditing(null);
-    setEditingContent('');
+    setEditingState({ isEditing: null, content: '' });
+  };
+
+  // 수정 저장
+  const handleEditSubmit = async (exchangeId) => {
+    if (containsProfanity(editingState.content)) {
+      toggleModal('비속어가 포함된 글은 작성할 수 없습니다');
+      return;
+    }
+
+    try {
+      const updatedRecord = await updateExchange(exchangeId, {
+        description: editingState.content,
+      });
+      setExchangeListData((prevData) =>
+        prevData.map((data) =>
+          data.id === exchangeId
+            ? { ...data, description: updatedRecord.description }
+            : data
+        )
+      );
+      handleEditCancel();
+      toggleModal('교환 글이 수정되었습니다.');
+    } catch (error) {
+      toggleModal('교환 글 수정에 실패했습니다.');
+    }
   };
 
   // 삭제
   const handleDelete = async (exchangeId) => {
     try {
-      // DB에서 해당 교환 글을 삭제
-      await pb.collection('exchangeList').delete(exchangeId);
-      alert('교환 글이 삭제되었습니다.');
-      setExchangeListData((prevExchangeList) =>
-        prevExchangeList.filter((exchange) => exchange.id !== exchangeId)
+      await deleteExchange(exchangeId);
+      setExchangeListData((prevList) =>
+        prevList.filter((exchange) => exchange.id !== exchangeId)
       );
+      toggleModal('교환 글이 삭제되었습니다.');
     } catch (error) {
-      // console.error('교환 글을 삭제하는 중 에러가 발생했습니다:', error);
-      alert('교환 글을 삭제하는 데 실패했습니다.');
+      toggleModal('교환 글 삭제에 실패했습니다.');
     }
   };
-
-  // 수정 저장
-  const handleEditSubmit = async (exchangeId) => {
-    // 비속어 필터링 체크
-    if (containsProfanity(editingContent)) {
-      showModal('비속어가 포함된 글은 작성할 수 없습니다');
-      return;
-    }
-    try {
-      if (editingContent)
-        await pb
-          .collection('exchangeList')
-          .update(exchangeId, { description: editingContent });
-
-      // 상태 업데이트 로직 수정
-      setExchangeListData((prevData) =>
-        prevData.map((data) =>
-          data.id === exchangeId
-            ? { ...data, description: editingContent }
-            : data
-        )
-      );
-
-      // 수정 상태 종료 및 알림
-      setIsEditing(null);
-      setEditingContent('');
-      alert('교환 글이 수정되었습니다.');
-    } catch (error) {
-      // console.error('교환 글 수정 중 에러가 발생했습니다:', error);
-      alert('교환 글 수정에 실패했습니다.');
-    }
-  };
-
-  // users 배열을 id를 키로 사용하는 객체로 변환
-  const usersById = {};
-  users.forEach((user) => {
-    usersById[user.id] = user;
-  });
 
   return (
     <>
       <ul className="mt-5">
         {[...exchangeListData].reverse().map((exchangeData) => {
-          let isUserTheWriter = '';
-          const user = usersById[exchangeData.writer];
+          const user = users[exchangeData.writer];
           const timeSinceUpdated = timeSince(exchangeData.updated);
-          if (
+          const isUserTheWriter =
             exchangeData.writer === loggedInUserId ||
-            loginUser?.user.username === 'admin'
-          )
-            isUserTheWriter = exchangeData.writer;
+            loginUser?.user?.username === 'admin';
+
           if (!user) {
             return null;
           }
+
           return (
             <li
               key={exchangeData.id}
-              className="p-5 mx-auto mb-3 overflow-hidden bg-white rounded-lg shadow-lg"
+              className="mx-auto mb-3 overflow-hidden rounded-lg bg-white p-5 shadow-lg"
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <div className="w-10 h-11">
+                  <div className="h-11 w-10">
                     <img
-                      className="object-cover w-full h-full border-2 rounded-full"
+                      className="h-full w-full rounded-full border-2 object-cover"
                       src={`https://shoong.pockethost.io/api/files/users/${user.id}/${user.avatar}`}
                       alt={`${user.username} 프로필 사진`}
                       aria-hidden="true"
@@ -136,34 +129,39 @@ export default function ExchangeArticle({
                 {isUserTheWriter && (
                   <div className="flex gap-1">
                     <GoPencil
-                      className="w-6 h-6 mr-1 cursor-pointer text-primary"
+                      className="mr-1 h-6 w-6 cursor-pointer text-primary"
                       onClick={() => handleEdit(exchangeData)}
                     />
                     <GoTrash
-                      className="w-6 h-6 mr-1 cursor-pointer text-primary"
+                      className="mr-1 h-6 w-6 cursor-pointer text-primary"
                       onClick={() => handleDelete(exchangeData.id)}
                     />
                   </div>
                 )}
               </div>
-              {isEditing === exchangeData.id ? (
+              {editingState.isEditing === exchangeData.id ? (
                 <div className="mt-3">
                   <textarea
-                    className="w-full px-2 py-1 text-gray-700 border rounded"
-                    value={editingContent}
-                    onChange={(e) => setEditingContent(e.target.value)}
+                    className="w-full rounded border px-2 py-1 text-gray-700"
+                    value={editingState.content}
+                    onChange={(e) =>
+                      setEditingState((prev) => ({
+                        ...prev,
+                        content: e.target.value,
+                      }))
+                    }
                   />
-                  <div className="flex justify-end gap-2 mt-2">
+                  <div className="mt-2 flex justify-end gap-2">
                     <button
-                      type="submit"
-                      className="w-3/12 py-3 text-white rounded-lg bg-secondary hover:bg-primary focus:bg-primary focus:outline-none"
+                      type="button"
+                      className="w-3/12 rounded-lg bg-secondary py-3 text-white hover:bg-primary focus:bg-primary focus:outline-none"
                       onClick={() => handleEditSubmit(exchangeData.id)}
                     >
                       저장
                     </button>
                     <button
                       type="button"
-                      className="w-3/12 buttonStyle bg-contentTertiary hover:bg-contentSecondary focus:bg-contentSecondary "
+                      className="buttonStyle w-3/12 bg-contentTertiary hover:bg-contentSecondary focus:bg-contentSecondary "
                       onClick={handleEditCancel}
                     >
                       취소
@@ -175,14 +173,14 @@ export default function ExchangeArticle({
                   <p className="text-gray-700">{exchangeData.description}</p>
                 </div>
               )}
-              <div className="flex items-center justify-between mt-4">
-                <div className="px-3 py-2 text-sm text-gray-700 border border-gray-700 rounded-3xl">
+              <div className="mt-4 flex items-center justify-between">
+                <div className="rounded-3xl border border-gray-700 px-3 py-2 text-sm text-gray-700">
                   {exchangeData.status}
                 </div>
                 {!isUserTheWriter && (
                   <button
                     type="button"
-                    className="w-4/12 buttonStyle bg-secondary hover:bg-primary focus:bg-primary"
+                    className="buttonStyle w-4/12 bg-secondary hover:bg-primary focus:bg-primary"
                   >
                     대화하기
                   </button>
@@ -193,9 +191,9 @@ export default function ExchangeArticle({
         })}
       </ul>
       <ConfirmationModal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        message={modalMessage}
+        isOpen={modalState.isOpen}
+        onClose={() => toggleModal()}
+        message={modalState.message}
         confirmButtonText="확인"
       />
     </>
