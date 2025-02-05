@@ -1,14 +1,11 @@
-import ExchangeList from '@/components/ExchangeList/ExchangeList';
 import { useLoaderData } from 'react-router-dom';
+import ExchangeList from '@/components/ExchangeList/ExchangeList';
 
 export default function ExchangeDetail() {
-  // @ts-ignore
   const { photoCardData } = useLoaderData();
   return (
-    <>
-      <div>
-        <ExchangeList photoCardData={photoCardData} />
-      </div>
-    </>
+    <div>
+      <ExchangeList photoCardData={photoCardData} />
+    </div>
   );
 }

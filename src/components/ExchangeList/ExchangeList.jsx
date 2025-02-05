@@ -2,10 +2,10 @@ import { isLogin } from '@/store/store';
 import { useState, useEffect } from 'react';
 import useUserListStore from '@/store/userListStore';
 import DetailHeader from '../DetailHeader/DetailHeader';
-import ExchangeForm from './ExchangeListDetail/ExchangeForm';
-import PhotoCardInfo from './ExchangeListDetail/PhotoCardInfo';
-import ExchangeEdit from './ExchangeListDetail/ExchangeForm';
-import NumberOfExchangeList from './ExchangeListDetail/NumberOfExchangeList';
+import ExchangeForm from './_components/ExchangeForm';
+import PhotoCardInfo from './_components/PhotoCardInfo';
+import ExchangeEdit from './_components/ExchangeEdit';
+import NumberOfExchangeList from './_components/NumberOfExchangeList';
 
 export default function ExchangeList({ photoCardData }) {
   const [exchangeListData, setExchangeListData] = useState(

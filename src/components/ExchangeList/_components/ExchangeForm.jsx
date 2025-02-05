@@ -100,54 +100,52 @@ export default function ExchangeForm({
   };
 
   return (
-    <>
-      <form
-        onSubmit={handleSubmit}
-        className="mx-auto overflow-hidden rounded-xl bg-white p-5 shadow-meetUp"
-      >
-        <fieldset>
-          <legend className="sr-only">교환글 작성 폼</legend>
-          <div className="flex w-full items-start space-x-4">
-            <div className="relative flex-1">
-              <label htmlFor="ExchangeEdit" className="sr-only">
-                교환 글을 입력하세요
-              </label>
-              <textarea
-                id="ExchangeEdit"
-                name="ExchangeEdit"
-                className="relative h-60pxr w-full rounded border border-gray-300 p-2 text-sm"
-                placeholder="코멘트를 입력하세요"
-                rows={3}
-                maxLength={150}
-                value={comment}
-                onChange={handleCommentChange}
-                onKeyDown={handleKeyDown}
-                aria-required="true"
-              ></textarea>
-              <span className="absolute bottom-60pxr right-2 text-xs text-gray-500">
-                {comment.length}/150
-              </span>
-              <div className="mt-2 flex items-center justify-end">
-                <div className="flex w-full items-center justify-end space-x-2">
-                  <button
-                    type="submit"
-                    className="buttonStyle w-3/12 bg-secondary hover:bg-primary focus:bg-primary"
-                  >
-                    저장
-                  </button>
-                  <button
-                    type="button"
-                    className="buttonStyle w-3/12 bg-contentTertiary hover:bg-contentSecondary focus:bg-contentSecondary"
-                    onClick={handleCancel}
-                  >
-                    취소
-                  </button>
-                </div>
+    <form
+      onSubmit={handleSubmit}
+      className="p-5 mx-auto overflow-hidden bg-white rounded-xl shadow-meetUp"
+    >
+      <fieldset>
+        <legend className="sr-only">교환글 작성 폼</legend>
+        <div className="flex items-start w-full space-x-4">
+          <div className="relative flex-1">
+            <label htmlFor="ExchangeEdit" className="sr-only">
+              교환 글을 입력하세요
+            </label>
+            <textarea
+              id="ExchangeEdit"
+              name="ExchangeEdit"
+              className="relative w-full p-2 text-sm border border-gray-300 rounded h-60pxr"
+              placeholder="코멘트를 입력하세요"
+              rows={3}
+              maxLength={150}
+              value={comment}
+              onChange={handleCommentChange}
+              onKeyDown={handleKeyDown}
+              aria-required="true"
+            ></textarea>
+            <span className="absolute text-xs text-gray-500 bottom-60pxr right-2">
+              {comment.length}/150
+            </span>
+            <div className="flex items-center justify-end mt-2">
+              <div className="flex items-center justify-end w-full space-x-2">
+                <button
+                  type="submit"
+                  className="w-3/12 buttonStyle bg-secondary hover:bg-primary focus:bg-primary"
+                >
+                  저장
+                </button>
+                <button
+                  type="button"
+                  className="w-3/12 buttonStyle bg-contentTertiary hover:bg-contentSecondary focus:bg-contentSecondary"
+                  onClick={handleCancel}
+                >
+                  취소
+                </button>
               </div>
             </div>
           </div>
-        </fieldset>
-      </form>
+        </div>
+      </fieldset>
       <ConfirmationModal
         isOpen={isModalOpen}
         onClose={closeModal}
@@ -156,6 +154,6 @@ export default function ExchangeForm({
         confirmButtonText="확인"
         showCancelButton={false}
       />
-    </>
+    </form>
   );
 }
