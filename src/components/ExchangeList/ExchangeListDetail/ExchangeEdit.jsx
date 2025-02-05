@@ -1,159 +1,200 @@
 import { useState } from 'react';
-import pb from '@/api/pocketbase';
-import { useNavigate } from 'react-router-dom';
+import { timeSince } from '@/utils/timeSince';
 import containsProfanity from '@/libs/filter';
+import { GoTrash, GoPencil } from 'react-icons/go';
+import useUserListStore from '@/store/userListStore';
+import useExchangeApi from '@/api/exchange/exchangeApi';
 import ConfirmationModal from '@/components/ConfirmationModal/ConfirmationModal';
 
 export default function ExchangeEdit({
   loginUser,
   loginStatus,
-  photoCardData,
   exchangeListData,
   setExchangeListData,
 }) {
-  const [comment, setComment] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalMessage, setModalMessage] = useState('');
-  const navigate = useNavigate();
-  const userId = loginStatus ? loginUser.user.id : null;
+  const { users } = useUserListStore((state) => ({
+    users: state.users,
+  }));
 
-  const handleCommentChange = (event) => {
-    setComment(event.target.value);
+  const [modalState, setModalState] = useState({
+    isOpen: false,
+    message: '',
+  });
+
+  const [editingState, setEditingState] = useState({
+    isEditing: null,
+    content: '',
+  });
+  const { deleteExchange, updateExchange } = useExchangeApi();
+
+  const loggedInUserId = loginStatus ? loginUser?.user?.id : '';
+
+  const toggleModal = (message) => {
+    setModalState((prevState) => ({
+      isOpen: !prevState.isOpen,
+      message: message || prevState.message,
+    }));
   };
 
-  const handleCancel = () => {
-    setComment('');
+  // 수정 시작
+  const handleEdit = (exchangeData) => {
+    setEditingState({
+      isEditing: exchangeData.id,
+      content: exchangeData.description,
+    });
   };
 
-  const showModal = (message) => {
-    setModalMessage(message);
-    setIsModalOpen(true);
+  // 수정 취소
+  const handleEditCancel = () => {
+    setEditingState({ isEditing: null, content: '' });
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleConfirmModal = () => {
-    if (modalMessage === '로그인이 필요한 서비스입니다.') {
-      navigate('/login');
-    }
-    setIsModalOpen(false);
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    if (!loginUser) {
-      showModal('로그인이 필요한 서비스입니다.');
-      navigate('/login');
+  // 수정 저장
+  const handleEditSubmit = async (exchangeId) => {
+    if (containsProfanity(editingState.content)) {
+      toggleModal('비속어가 포함된 글은 작성할 수 없습니다');
       return;
     }
-
-    // 비속어 필터링 체크
-    if (containsProfanity(comment)) {
-      showModal('비속어가 포함된 글은 작성할 수 없습니다');
-      return;
-    }
-
-    if (!comment.trim()) {
-      showModal('교환 글 내용을 입력해주세요.');
-      return;
-    }
-
-    const newExchangeData = {
-      writer: userId,
-      description: comment,
-      status: '교환대기중',
-      chatContent: null,
-    };
 
     try {
-      // exchangeList에 새로운 교환 글을 추가
-      const newRecord = await pb
-        .collection('exchangeList')
-        .create(newExchangeData);
-
-      // 현재 포토카드의 exchangeList 필드에 새 레코드 ID 추가
-      if (newRecord) {
-        await pb.collection('photoCards').update(photoCardData.id, {
-          'exchangeList+': newRecord.id,
-        }),
-          await pb.collection('users').update(loginUser.user.id, {
-            'exchangeStatus+': newRecord.id,
-          });
-      }
-
-      setExchangeListData([...exchangeListData, newRecord]);
-      setComment(''); // 코멘트 초기화
-      showModal('교환 글이 성공적으로 저장되었습니다.');
+      const updatedRecord = await updateExchange(exchangeId, {
+        description: editingState.content,
+      });
+      setExchangeListData((prevData) =>
+        prevData.map((data) =>
+          data.id === exchangeId
+            ? { ...data, description: updatedRecord.description }
+            : data
+        )
+      );
+      handleEditCancel();
+      toggleModal('교환 글이 수정되었습니다.');
     } catch (error) {
-      showModal('데이터를 저장하는 데 실패했습니다.');
-      console.error('데이터를 저장하는 중 에러가 발생했습니다:', error);
+      toggleModal('교환 글 수정에 실패했습니다.');
     }
   };
 
-  const handleKeyDown = (event) => {
-    if (event.keyCode === 13) {
-      handleSubmit(event);
+  // 삭제
+  const handleDelete = async (exchangeId) => {
+    try {
+      await deleteExchange(exchangeId);
+      setExchangeListData((prevList) =>
+        prevList.filter((exchange) => exchange.id !== exchangeId)
+      );
+      toggleModal('교환 글이 삭제되었습니다.');
+    } catch (error) {
+      toggleModal('교환 글 삭제에 실패했습니다.');
     }
   };
 
   return (
     <>
-      <form
-        onSubmit={handleSubmit}
-        className="mx-auto overflow-hidden rounded-xl bg-white p-5 shadow-meetUp"
-      >
-        <fieldset>
-          <legend className="sr-only">교환글 작성 폼</legend>
-          <div className="flex w-full items-start space-x-4">
-            <div className="relative flex-1">
-              <label htmlFor="exchangeArticle" className="sr-only">
-                교환 글을 입력하세요
-              </label>
-              <textarea
-                id="exchangeArticle"
-                name="exchangeArticle"
-                className="relative h-60pxr w-full rounded border border-gray-300 p-2 text-sm"
-                placeholder="코멘트를 입력하세요"
-                rows={3}
-                maxLength={150}
-                value={comment}
-                onChange={handleCommentChange}
-                onKeyDown={handleKeyDown}
-                aria-required="true"
-              ></textarea>
-              <span className="absolute bottom-60pxr right-2 text-xs text-gray-500">
-                {comment.length}/150
-              </span>
-              <div className="mt-2 flex items-center justify-end">
-                <div className="flex w-full items-center justify-end space-x-2">
-                  <button
-                    type="submit"
-                    className="buttonStyle w-3/12 bg-secondary hover:bg-primary focus:bg-primary"
-                  >
-                    저장
-                  </button>
+      <ul className="mt-5">
+        {[...exchangeListData].reverse().map((exchangeData) => {
+          const user = users[exchangeData.writer];
+          const timeSinceUpdated = timeSince(exchangeData.updated);
+          const isUserTheWriter =
+            exchangeData.writer === loggedInUserId ||
+            loginUser?.user?.username === 'admin';
+
+          if (!user) {
+            return null;
+          }
+
+          return (
+            <li
+              key={exchangeData.id}
+              className="mx-auto mb-3 overflow-hidden rounded-lg bg-white p-5 shadow-lg"
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <div className="h-11 w-10">
+                    <img
+                      className="h-full w-full rounded-full border-2 object-cover"
+                      src={`https://shoong.pockethost.io/api/files/users/${user.id}/${user.avatar}`}
+                      alt={`${user.username} 프로필 사진`}
+                      aria-hidden="true"
+                    />
+                  </div>
+                  <div className="ml-3">
+                    <p className="font-semibold">{user.username}</p>
+                    <time
+                      dateTime={exchangeData.updated}
+                      className="text-sm text-gray-500"
+                    >
+                      {timeSinceUpdated}
+                    </time>
+                  </div>
+                </div>
+                {isUserTheWriter && (
+                  <div className="flex gap-1">
+                    <GoPencil
+                      className="mr-1 h-6 w-6 cursor-pointer text-primary"
+                      onClick={() => handleEdit(exchangeData)}
+                    />
+                    <GoTrash
+                      className="mr-1 h-6 w-6 cursor-pointer text-primary"
+                      onClick={() => handleDelete(exchangeData.id)}
+                    />
+                  </div>
+                )}
+              </div>
+              {editingState.isEditing === exchangeData.id ? (
+                <div className="mt-3">
+                  <textarea
+                    className="w-full rounded border px-2 py-1 text-gray-700"
+                    value={editingState.content}
+                    onChange={(e) =>
+                      setEditingState((prev) => ({
+                        ...prev,
+                        content: e.target.value,
+                      }))
+                    }
+                  />
+                  <div className="mt-2 flex justify-end gap-2">
+                    <button
+                      type="button"
+                      className="w-3/12 rounded-lg bg-secondary py-3 text-white hover:bg-primary focus:bg-primary focus:outline-none"
+                      onClick={() => handleEditSubmit(exchangeData.id)}
+                    >
+                      저장
+                    </button>
+                    <button
+                      type="button"
+                      className="buttonStyle w-3/12 bg-contentTertiary hover:bg-contentSecondary focus:bg-contentSecondary "
+                      onClick={handleEditCancel}
+                    >
+                      취소
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="mt-3">
+                  <p className="text-gray-700">{exchangeData.description}</p>
+                </div>
+              )}
+              <div className="mt-4 flex items-center justify-between">
+                <div className="rounded-3xl border border-gray-700 px-3 py-2 text-sm text-gray-700">
+                  {exchangeData.status}
+                </div>
+                {!isUserTheWriter && (
                   <button
                     type="button"
-                    className="buttonStyle w-3/12 bg-contentTertiary hover:bg-contentSecondary focus:bg-contentSecondary"
-                    onClick={handleCancel}
+                    className="buttonStyle w-4/12 bg-secondary hover:bg-primary focus:bg-primary"
                   >
-                    취소
+                    대화하기
                   </button>
-                </div>
+                )}
               </div>
-            </div>
-          </div>
-        </fieldset>
-      </form>
+            </li>
+          );
+        })}
+      </ul>
       <ConfirmationModal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        onConfirm={handleConfirmModal}
-        message={modalMessage}
-        cancelButtonText="취소"
+        isOpen={modalState.isOpen}
+        showCancelButton={false}
+        onConfirm={() => toggleModal()}
+        message={modalState.message}
         confirmButtonText="확인"
       />
     </>

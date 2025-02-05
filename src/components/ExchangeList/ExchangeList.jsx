@@ -2,9 +2,9 @@ import { isLogin } from '@/store/store';
 import { useState, useEffect } from 'react';
 import useUserListStore from '@/store/userListStore';
 import DetailHeader from '../DetailHeader/DetailHeader';
-import ExchangeEdit from './ExchangeListDetail/ExchangeEdit';
+import ExchangeForm from './ExchangeListDetail/ExchangeForm';
 import PhotoCardInfo from './ExchangeListDetail/PhotoCardInfo';
-import ExchangeArticle from './ExchangeListDetail/ExchangeArticle';
+import ExchangeEdit from './ExchangeListDetail/ExchangeForm';
 import NumberOfExchangeList from './ExchangeListDetail/NumberOfExchangeList';
 
 export default function ExchangeList({ photoCardData }) {
@@ -38,15 +38,15 @@ export default function ExchangeList({ photoCardData }) {
       <DetailHeader title="자세히" isBottomSheet text={text} />
       <PhotoCardInfo photoCardData={photoCardData} />
       <NumberOfExchangeList exchangeListData={exchangeListData} />
-      <div className="mx-auto mt-4 w-10/12">
-        <ExchangeEdit
+      <div className="w-10/12 mx-auto mt-4">
+        <ExchangeForm
           loginStatus={init}
           loginUser={loggedInUser}
           photoCardData={photoCardData}
           exchangeListData={exchangeListData}
           setExchangeListData={setExchangeListData}
         />
-        <ExchangeArticle
+        <ExchangeEdit
           loginStatus={init}
           loginUser={loggedInUser}
           exchangeListData={exchangeListData}
