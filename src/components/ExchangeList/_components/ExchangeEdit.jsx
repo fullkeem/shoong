@@ -1,21 +1,17 @@
 import { useState } from 'react';
 import { timeSince } from '@/utils/timeSince';
-import containsProfanity from '@/libs/filter';
 import { GoTrash, GoPencil } from 'react-icons/go';
-import useUserListStore from '@/store/userListStore';
-import useExchangeApi from '@/api/exchange/exchangeApi';
+
 import ConfirmationModal from '@/components/ConfirmationModal/ConfirmationModal';
 
 export default function ExchangeEdit({
+  users,
   loginUser,
   loginStatus,
   exchangeListData,
-  setExchangeListData,
+  onEditExchange,
+  onDeleteExchange,
 }) {
-  const { users } = useUserListStore((state) => ({
-    users: state.users,
-  }));
-
   const [modalState, setModalState] = useState({
     isOpen: false,
     message: '',
@@ -25,14 +21,11 @@ export default function ExchangeEdit({
     isEditing: null,
     content: '',
   });
-  const { deleteExchange, updateExchange } = useExchangeApi();
-
-  const loggedInUserId = loginStatus ? loginUser?.user?.id : '';
 
   const toggleModal = (message) => {
-    setModalState((prevState) => ({
-      isOpen: !prevState.isOpen,
-      message: message || prevState.message,
+    setModalState((prev) => ({
+      isOpen: !prev.isOpen,
+      message: message || prev.message,
     }));
   };
 
@@ -51,54 +44,42 @@ export default function ExchangeEdit({
 
   // 수정 저장
   const handleEditSubmit = async (exchangeId) => {
-    if (containsProfanity(editingState.content)) {
-      toggleModal('비속어가 포함된 글은 작성할 수 없습니다');
-      return;
-    }
-
     try {
-      const updatedRecord = await updateExchange(exchangeId, {
-        description: editingState.content,
-      });
-      setExchangeListData((prevData) =>
-        prevData.map((data) =>
-          data.id === exchangeId
-            ? { ...data, description: updatedRecord.description }
-            : data
-        )
-      );
-      handleEditCancel();
+      await onEditExchange(exchangeId, editingState.content);
       toggleModal('교환 글이 수정되었습니다.');
     } catch (error) {
-      toggleModal('교환 글 수정에 실패했습니다.');
+      toggleModal(error.message);
     }
   };
 
   // 삭제
   const handleDelete = async (exchangeId) => {
     try {
-      await deleteExchange(exchangeId);
-      setExchangeListData((prevList) =>
-        prevList.filter((exchange) => exchange.id !== exchangeId)
-      );
+      await onDeleteExchange(exchangeId);
       toggleModal('교환 글이 삭제되었습니다.');
     } catch (error) {
-      toggleModal('교환 글 삭제에 실패했습니다.');
+      toggleModal(error.message);
     }
   };
+
+  const loggedInUserId = loginStatus ? loginUser?.user?.id : '';
 
   return (
     <ul className="mt-5">
       {[...exchangeListData].reverse().map((exchangeData) => {
-        const user = users[exchangeData.writer];
+        const writer = users[exchangeData.writer];
+        if (!writer) {
+          return (
+            <li key={exchangeData.id}>
+              <p>로딩 중...</p>
+            </li>
+          );
+        }
+
         const timeSinceUpdated = timeSince(exchangeData.updated);
         const isUserTheWriter =
           exchangeData.writer === loggedInUserId ||
           loginUser?.user?.username === 'admin';
-
-        if (!user) {
-          return null;
-        }
 
         return (
           <li
@@ -110,13 +91,13 @@ export default function ExchangeEdit({
                 <div className="w-10 h-11">
                   <img
                     className="object-cover w-full h-full border-2 rounded-full"
-                    src={`https://shoong.pockethost.io/api/files/users/${user.id}/${user.avatar}`}
-                    alt={`${user.username} 프로필 사진`}
+                    src={`https://shoong.pockethost.io/api/files/users/${writer.id}/${writer.avatar}`}
+                    alt="프로필 사진"
                     aria-hidden="true"
                   />
                 </div>
                 <div className="ml-3">
-                  <p className="font-semibold">{user.username}</p>
+                  <p className="font-semibold">{writer.username}</p>
                   <time
                     dateTime={exchangeData.updated}
                     className="text-sm text-gray-500"
@@ -125,6 +106,7 @@ export default function ExchangeEdit({
                   </time>
                 </div>
               </div>
+
               {isUserTheWriter && (
                 <div className="flex gap-1">
                   <GoPencil
@@ -138,6 +120,7 @@ export default function ExchangeEdit({
                 </div>
               )}
             </div>
+
             {editingState.isEditing === exchangeData.id ? (
               <div className="mt-3">
                 <textarea
@@ -188,6 +171,7 @@ export default function ExchangeEdit({
           </li>
         );
       })}
+
       <ConfirmationModal
         isOpen={modalState.isOpen}
         showCancelButton={false}

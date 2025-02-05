@@ -10,9 +10,9 @@ import { createExchange, updateExchange, deleteExchange } from '@/api/exchange';
  * @param {object} photoCardData - PocketBase에서 가져온 포토카드 데이터
  */
 
-export function useExchangeDetail(photoCardData) {
+export default function useExchangeDetail(photoCardData) {
   const [exchangeListData, setExchangeListData] = useState(
-    photoCardData?.expend?.exchangeList || []
+    photoCardData?.expand?.exchangeList || []
   );
 
   const { fetchUsers, users } = useUserListStore();
