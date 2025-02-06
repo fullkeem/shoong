@@ -24,7 +24,7 @@ export default function DetailHeader({
   return (
     <>
       <div
-        className={`fixed top-0 flex h-12 w-full items-center shadow ${flexLayout} z-10 bg-white px-5 ${desktop}`}
+        className={`fixed top-0 flex h-12 w-full items-center shadow ${flexLayout} z-10 bg-white px-5 ${desktop} desktop:hidden`}
       >
         <button className={`w-16pxr ${absolute}`}>
           <LeftArrow onClick={() => navigate(-1)} className="cursor-pointer" />

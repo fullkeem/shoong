@@ -9,10 +9,10 @@ export default function DesktopHeader() {
   };
 
   return (
-    <div role="none" className="mx-auto hidden  bg-white desktop:block">
+    <div role="none" className="hidden mx-auto bg-white desktop:block">
       <div
         role="banner"
-        className="flex h-100pxr flex-row items-center justify-between px-4"
+        className="flex flex-row items-center justify-between px-4 h-100pxr"
       >
         <img
           src="/icons/shoongLogo.svg"

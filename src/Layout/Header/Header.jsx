@@ -1,6 +1,5 @@
 import { BsChat, BsBell } from 'react-icons/bs';
-import { useLocation } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 
 export default function Header() {
   const { pathname } = useLocation();
@@ -24,7 +23,7 @@ export default function Header() {
   return (
     !isDetailHeaderPage && (
       <div className="desktop:hidden">
-        <div className="fixed top-0 z-20 flex h-55pxr w-full items-center justify-between bg-white px-3 shadow">
+        <div className="fixed top-0 z-20 flex items-center justify-between w-full px-3 bg-white shadow h-55pxr">
           <Link to="./" className="px-10pxr">
             <img
               className="flex h-36pxr w-100pxr"

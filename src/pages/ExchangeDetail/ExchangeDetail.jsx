@@ -25,12 +25,14 @@ export default function ExchangeDetail() {
      ** 실제 포토카드와 이미지의 사이즈가 상이할 수 있으니 주의해주세요! **`;
 
   return (
-    <div>
-      <DetailHeader title="자세히" isBottomSheet text={text} />
-      <PhotoCardInfo photoCardData={photoCardData} />
-      <NumberOfExchangeList exchangeListData={exchangeListData} />
+    <div className="flex @container">
+      <div>
+        <DetailHeader title="자세히" isBottomSheet text={text} />
+        <PhotoCardInfo photoCardData={photoCardData} />
+      </div>
 
       <div className="w-10/12 mx-auto mt-4">
+        <NumberOfExchangeList exchangeListData={exchangeListData} />
         <ExchangeForm onAddExchange={addExchange} />
 
         <ExchangeEdit
