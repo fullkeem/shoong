@@ -37,11 +37,6 @@ export default function ExchangeEdit({
     });
   };
 
-  // 수정 취소
-  const handleEditCancel = () => {
-    setEditingState({ isEditing: null, content: '' });
-  };
-
   // 수정 저장
   const handleEditSubmit = async (exchangeId) => {
     try {
@@ -145,7 +140,9 @@ export default function ExchangeEdit({
                   <button
                     type="button"
                     className="w-3/12 buttonStyle bg-contentTertiary hover:bg-contentSecondary focus:bg-contentSecondary "
-                    onClick={handleEditCancel}
+                    onClick={() =>
+                      setEditingState({ isEditing: null, content: '' })
+                    }
                   >
                     취소
                   </button>

@@ -18,10 +18,6 @@ export default function ExchangeForm({ onAddExchange }) {
     setIsModalOpen(false);
   };
 
-  const handleCancel = () => {
-    setComment('');
-  };
-
   const handleConfirmModal = () => {
     if (modalMessage === '로그인이 필요한 서비스입니다.') {
       navigate('/login');
@@ -81,7 +77,7 @@ export default function ExchangeForm({ onAddExchange }) {
                 <button
                   type="button"
                   className="w-3/12 buttonStyle bg-contentTertiary hover:bg-contentSecondary focus:bg-contentSecondary"
-                  onClick={handleCancel}
+                  onClick={() => setComment('')}
                 >
                   취소
                 </button>
