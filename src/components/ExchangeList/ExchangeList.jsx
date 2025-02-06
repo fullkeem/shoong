@@ -1,33 +1,21 @@
-import { isLogin } from '@/store/store';
-import { useState, useEffect } from 'react';
-import useUserListStore from '@/store/userListStore';
+import useExchangeDetail from '@/hooks/useExchangeDetail';
+
+import ExchangeForm from './_components/ExchangeForm';
+import ExchangeEdit from './_components/ExchangeEdit';
 import DetailHeader from '../DetailHeader/DetailHeader';
-import ExchangeEdit from '../ExchangeListDetail/ExchangeEdit';
-import PhotoCardInfo from '../ExchangeListDetail/PhotoCardInfo';
-import ExchangeArticle from '../ExchangeListDetail/ExchangeArticle';
-import NumberOfExchangeList from '../ExchangeListDetail/NumberOfExchangeList';
+import PhotoCardInfo from './_components/PhotoCardInfo';
+import NumberOfExchangeList from './_components/NumberOfExchangeList';
 
 export default function ExchangeList({ photoCardData }) {
-  const [exchangeListData, setExchangeListData] = useState(
-    photoCardData?.expand?.exchangeList || []
-  );
-  const { fetchUsers } = useUserListStore();
-
-  const { init } = isLogin();
-  const userInfo = localStorage.getItem('auth');
-  const loggedInUser = userInfo ? JSON.parse(userInfo) : null;
-
-  useEffect(() => {
-    // 교환글에서 작성자들의 id들을 추출
-    const writerIds = exchangeListData
-      .map((data) => data?.writer)
-      .filter(Boolean);
-
-    // 작성자가 있을 경우엔, users에서 해당하는 유저의 정보 가져오기
-    if (writerIds.length > 0) {
-      fetchUsers(writerIds);
-    }
-  }, [exchangeListData, fetchUsers]);
+  const {
+    users,
+    loginUser,
+    loginStatus,
+    addExchange,
+    editExchange,
+    removeExchange,
+    exchangeListData,
+  } = useExchangeDetail(photoCardData);
 
   const text = `** 포토카드 이미지는 거래의 이해를 돕는 식별 목적으로 사용하고 있어요**
   
@@ -38,19 +26,17 @@ export default function ExchangeList({ photoCardData }) {
       <DetailHeader title="자세히" isBottomSheet text={text} />
       <PhotoCardInfo photoCardData={photoCardData} />
       <NumberOfExchangeList exchangeListData={exchangeListData} />
-      <div className="mx-auto mt-4 w-10/12">
+
+      <div className="w-10/12 mx-auto mt-4">
+        <ExchangeForm onAddExchange={addExchange} />
+
         <ExchangeEdit
-          loginStatus={init}
-          loginUser={loggedInUser}
-          photoCardData={photoCardData}
+          users={users}
+          loginUser={loginUser}
+          loginStatus={loginStatus}
+          onEditExchange={editExchange}
+          onDeleteExchange={removeExchange}
           exchangeListData={exchangeListData}
-          setExchangeListData={setExchangeListData}
-        />
-        <ExchangeArticle
-          loginStatus={init}
-          loginUser={loggedInUser}
-          exchangeListData={exchangeListData}
-          setExchangeListData={setExchangeListData}
         />
       </div>
     </>
