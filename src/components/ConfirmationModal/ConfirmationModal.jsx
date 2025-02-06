@@ -15,7 +15,8 @@ export default function ConfirmationModal({
   cancelNotificationMessage,
   buttonStyles = {
     cancel: 'rounded bg-gray200 px-6 py-2 hover:bg-gray300',
-    confirm: 'rounded bg-primary px-6 py-2 text-white hover:bg-indigo-700',
+    confirm:
+      'rounded bg-primary px-6 py-2 w-1/3 font-bold text-white hover:bg-indigo-700',
   },
 }) {
   const dialogRef = useRef(null);
@@ -73,13 +74,14 @@ export default function ConfirmationModal({
     <>
       <dialog ref={dialogRef} className={`fixed inset-0 z-50 overflow-y-auto`}>
         <div className={`fixed inset-0 bg-black bg-opacity-50`}>
-          <div className="flex min-h-screen items-center justify-center">
-            <div className="rounded-lg bg-white p-6 shadow-lg">
+          <div className="flex items-center justify-center min-h-screen">
+            <div className="w-1/3 p-6 bg-white rounded-lg shadow-lg">
               <h2 className="mb-4 text-lg font-bold">{title}</h2>
               <p>{message}</p>
-              <div className="mt-6 flex justify-end gap-3">
+              <div className="flex justify-end gap-3 mt-6">
                 {showCancelButton && (
                   <button
+                    type="button"
                     ref={cancelButtonRef}
                     className={buttonStyles.cancel}
                     onClick={() => {
@@ -93,6 +95,7 @@ export default function ConfirmationModal({
                 )}
                 {showConfirmButton && (
                   <button
+                    type="button"
                     ref={confirmButtonRef}
                     className={buttonStyles.confirm}
                     onClick={() => {
@@ -112,7 +115,7 @@ export default function ConfirmationModal({
 
       {notification && (
         <div className="fixed inset-0 flex items-center justify-center">
-          <div className="rounded bg-gray-800 bg-opacity-75 px-4 py-2 text-white">
+          <div className="px-4 py-2 text-white bg-gray-800 bg-opacity-75 rounded">
             {notification}
           </div>
         </div>

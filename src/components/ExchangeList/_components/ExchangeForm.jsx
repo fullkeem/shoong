@@ -31,10 +31,10 @@ export default function ExchangeForm({ onAddExchange }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+    console.log('test1');
     try {
       await onAddExchange(comment);
-      setComment(''); // 코멘트 초기화
+      setComment('');
       showModal('교환 글이 성공적으로 저장되었습니다.');
     } catch (error) {
       showModal(error.message);

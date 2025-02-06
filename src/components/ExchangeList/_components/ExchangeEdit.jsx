@@ -47,6 +47,7 @@ export default function ExchangeEdit({
     try {
       await onEditExchange(exchangeId, editingState.content);
       toggleModal('교환 글이 수정되었습니다.');
+      setEditingState({ isEditing: null, content: '' });
     } catch (error) {
       toggleModal(error.message);
     }
