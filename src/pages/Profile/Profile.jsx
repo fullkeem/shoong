@@ -3,18 +3,18 @@ import ProfileItemContainer from '@/components/ProfileItemContainer/ProfileItemC
 import NavigationTile from '@/components/NavigationTile/NavigationTile';
 import ProfileFooter from '@/components/ProfileFooter/ProfileFooter';
 import ProfileHeader from '@/components/ProfileTitle/ProfileHeader';
-import ExchangeStatus from '@/components/ExchangeList/_components/ExchangeStatus';
+import ExchangeStatus from '@/components/ExchangeList/ExchangeStatus';
 import ProfileSetting from '../ProfileSetting/ProfileSetting';
 
 export default function Profile() {
   return (
     <>
       {/* 데스크톱 화면 */}
-      <div className="justify-center hidden mx-auto bg-white max-w-1280pxr desktop:flex desktop:gap-30pxr">
-        <div className="hidden border-r w-310pxr border-neutral-300 pt-100pxr desktop:block">
+      <div className="max-w-1280pxr mx-auto hidden justify-center bg-white desktop:flex desktop:gap-30pxr">
+        <div className="hidden w-310pxr border-r border-neutral-300 pt-100pxr desktop:block">
           <ProfileSetting />
         </div>
-        <div className="flex flex-col gap-5 pb-5 w-970pxr pt-60pxr">
+        <div className="flex w-970pxr flex-col gap-5 pb-5 pt-60pxr">
           <ProfileHeader />
           <ProfileItemContainer title="콜렉트북">
             <CollectBook />
@@ -26,7 +26,7 @@ export default function Profile() {
             <NavigationTile
               to="/"
               text="가이드"
-              className="mt-10 border-t-4 border-b-2 border-gray-200 "
+              className="mt-10 border-b-2 border-t-4 border-gray-200 "
             />
             <NavigationTile
               to="/informUs"
@@ -50,7 +50,7 @@ export default function Profile() {
           <NavigationTile
             to="/"
             text="가이드"
-            className="mt-10 border-t-4 border-b-2 border-gray-200 "
+            className="mt-10 border-b-2 border-t-4 border-gray-200 "
           />
           <NavigationTile
             to="/informUs"

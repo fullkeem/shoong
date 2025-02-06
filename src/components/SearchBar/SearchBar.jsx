@@ -26,11 +26,11 @@ export default function SearchBar({ name, placeholder, bgStyle }) {
       resetSearch();
     };
     return unmount;
-  }, []);
+  }, [resetSearch]);
 
   useEffect(() => {
     resetSearch();
-  }, [location]);
+  }, [location, resetSearch]);
 
   useEffect(() => {
     if (inputRef.current) {
@@ -40,7 +40,7 @@ export default function SearchBar({ name, placeholder, bgStyle }) {
 
   return (
     <form
-      className={`${bgStyle} mx-4 inline-flex w-4/5 flex-row items-start justify-start gap-2 rounded-[30px] px-4 py-1.5`}
+      className={`${bgStyle} inline-flex flex-row items-center justify-start gap-2 rounded-3xl  border border-primary px-4 py-2`}
       style={{ maxWidth: '1280px' }}
     >
       <label className="self-center" htmlFor={name}>
@@ -51,7 +51,7 @@ export default function SearchBar({ name, placeholder, bgStyle }) {
         id={name}
         ref={inputRef}
         placeholder={placeholder}
-        className="w-full self-center bg-transparent"
+        className="self-center w-full bg-transparent outline-none"
         onChange={debounce(handleSearch, 500)}
         defaultValue={search}
       />
