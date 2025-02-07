@@ -61,7 +61,7 @@ export default function ExchangeEdit({
   const loggedInUserId = loginStatus ? loginUser?.user?.id : '';
 
   return (
-    <ul className="mt-5">
+    <ul className="my-5 flex flex-col gap-4">
       {[...exchangeListData].reverse().map((exchangeData) => {
         const writer = users[exchangeData.writer];
         if (!writer) {
@@ -80,13 +80,13 @@ export default function ExchangeEdit({
         return (
           <li
             key={exchangeData.id}
-            className="p-5 mx-auto mb-3 overflow-hidden bg-white rounded-lg shadow-lg"
+            className="overflow-hidden rounded-lg bg-white p-5 shadow-lg"
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center">
-                <div className="w-10 h-11">
+                <div className="h-11 w-10">
                   <img
-                    className="object-cover w-full h-full border-2 rounded-full"
+                    className="h-full w-full rounded-full border-2 object-cover"
                     src={`https://shoong.pockethost.io/api/files/users/${writer.id}/${writer.avatar}`}
                     alt="프로필 사진"
                     aria-hidden="true"
@@ -106,11 +106,11 @@ export default function ExchangeEdit({
               {isUserTheWriter && (
                 <div className="flex gap-1">
                   <GoPencil
-                    className="w-6 h-6 mr-1 cursor-pointer text-primary"
+                    className="mr-1 h-6 w-6 cursor-pointer text-primary"
                     onClick={() => handleEdit(exchangeData)}
                   />
                   <GoTrash
-                    className="w-6 h-6 mr-1 cursor-pointer text-primary"
+                    className="mr-1 h-6 w-6 cursor-pointer text-primary"
                     onClick={() => handleDelete(exchangeData.id)}
                   />
                 </div>
@@ -120,7 +120,7 @@ export default function ExchangeEdit({
             {editingState.isEditing === exchangeData.id ? (
               <div className="mt-3">
                 <textarea
-                  className="w-full px-2 py-1 text-gray-700 border rounded"
+                  className="h-20 w-full rounded border p-2 text-gray-700"
                   value={editingState.content}
                   onChange={(e) =>
                     setEditingState((prev) => ({
@@ -129,17 +129,17 @@ export default function ExchangeEdit({
                     }))
                   }
                 />
-                <div className="flex justify-end gap-2 mt-2">
+                <div className="mt-2 flex justify-end gap-2">
                   <button
                     type="button"
-                    className="w-3/12 py-3 text-white rounded-lg bg-secondary hover:bg-primary focus:bg-primary focus:outline-none"
+                    className="w-3/12 rounded-lg bg-secondary py-3 text-white hover:bg-primary focus:bg-primary focus:outline-none"
                     onClick={() => handleEditSubmit(exchangeData.id)}
                   >
                     저장
                   </button>
                   <button
                     type="button"
-                    className="w-3/12 buttonStyle bg-contentTertiary hover:bg-contentSecondary focus:bg-contentSecondary "
+                    className="buttonStyle w-3/12 bg-contentTertiary hover:bg-contentSecondary focus:bg-contentSecondary "
                     onClick={() =>
                       setEditingState({ isEditing: null, content: '' })
                     }
@@ -153,14 +153,14 @@ export default function ExchangeEdit({
                 <p className="text-gray-700">{exchangeData.description}</p>
               </div>
             )}
-            <div className="flex items-center justify-between mt-4">
-              <div className="px-3 py-2 text-sm text-gray-700 border border-gray-700 rounded-3xl">
+            <div className="mt-4 flex items-center justify-between">
+              <div className="rounded-3xl border border-gray-700 px-3 py-2 text-sm text-gray-700">
                 {exchangeData.status}
               </div>
               {!isUserTheWriter && (
                 <button
                   type="button"
-                  className="w-4/12 buttonStyle bg-secondary hover:bg-primary focus:bg-primary"
+                  className="buttonStyle w-4/12 bg-secondary hover:bg-primary focus:bg-primary"
                 >
                   대화하기
                 </button>

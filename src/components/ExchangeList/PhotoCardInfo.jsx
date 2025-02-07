@@ -7,7 +7,7 @@ export default function PhotoCardInfo({ photoCardData }) {
   const { cardImg, groupName, id, label, logoImage, memberName, title } =
     photoCardData;
   return (
-    <div className="flexCenter mx-auto mb-8 mt-10 w-10/12 flex-col pt-10">
+    <div className="flexCenter mx-auto my-8 w-10/12 flex-col">
       <div className="flex w-full flex-col">
         <div className="flex items-center">
           <ArtistLogo
@@ -34,7 +34,7 @@ export default function PhotoCardInfo({ photoCardData }) {
       <PhocaImg
         phocaImgSrc={`https://shoong.pockethost.io/api/files/photoCards/${id}/${cardImg}`}
         phocaImgAlt={`${title} 포토카드`}
-        imgClass={'w-10/12 mt-3'}
+        imgClass={'w-full mt-3'}
       />
     </div>
   );
