@@ -1,9 +1,9 @@
 import MeetUpMobile from './MeetUpMobile';
 import MeetUpDesktop from './MeetUpDesktop';
-import { useLoaderData } from 'react-router';
+import { useMeetUpList } from '@/hooks/useMeetUpQuery';
 
 export default function MeetUp() {
-  const meetUpData = useLoaderData();
+  const { data: meetUpData = [] } = useMeetUpList();
 
   return (
     <div className="relative top-56pxr h-screen-nav @container desktop:top-0">
