@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useMeetUpStore } from '@/store/store';
 import { Map, ZoomControl } from 'react-kakao-maps-sdk';
 
-export default function MeetUpMap({ meetUpData, mapStyle }) {
+export default function MeetUpMap({ meetUpData }) {
   const [userLocation, setUserLocation] = useState(null);
   const selectedLocation = useMeetUpStore((state) => state.selectedLocation);
   const [mapCenter, setMapCenter] = useState({

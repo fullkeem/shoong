@@ -11,10 +11,10 @@ export default function Profile() {
     <>
       {/* 데스크톱 화면 */}
       <div className="max-w-1280pxr mx-auto hidden justify-center bg-white desktop:flex desktop:gap-30pxr">
-        <div className="hidden w-310pxr border-r border-neutral-300 pt-100pxr desktop:block">
+        <div className="hidden w-310pxr border-r border-primary pt-100pxr desktop:block desktop:pt-0">
           <ProfileSetting />
         </div>
-        <div className="flex w-970pxr flex-col gap-5 pb-5 pt-60pxr">
+        <div className="flex w-3/4 flex-col gap-5 pb-5 pt-60pxr desktop:pt-0">
           <ProfileHeader />
           <ProfileItemContainer title="콜렉트북">
             <CollectBook />

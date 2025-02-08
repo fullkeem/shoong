@@ -4,12 +4,12 @@ import MeetUpItemContainer from '@/components/MeetUpItemContainer/MeetUpItemCont
 
 export default function MeetUpDesktop({ meetUpData }) {
   return (
-    <div className="flex flex-row w-full h-full">
-      <div className="relative flex flex-row justify-center w-1/4 h-full border-t-gray-50">
+    <div className="flex h-full w-full flex-row">
+      <div className="relative flex h-full w-1/4 flex-row justify-center border-t-gray-50">
         <SearchBar
           name={'mapSearch'}
           placeholder={'장소,아티스트 이름'}
-          bgStyle={'absolute top-2 mx-1 w-11/12 bg-white'}
+          bgStyle={'absolute top-2 mx-1 py-3 w-11/12 bg-white'}
         />
         <MeetUpItemContainer
           meetUpData={meetUpData}
