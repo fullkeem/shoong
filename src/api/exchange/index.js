@@ -1,13 +1,13 @@
 import createExchange from './createExchange';
 import updateExchange from './updateExchange';
 import deleteExchange from './deleteExchange';
-import getExchangeById from './getExchangeById';
-import getExchangeList from './getExchangeList';
+import fetchExchangeDetail from './fetchExchangeDetail';
+import newExchangeToPhotoCard from './newExchangeToPhotoCard';
 
 export {
   createExchange,
   updateExchange,
   deleteExchange,
-  getExchangeById,
-  getExchangeList,
+  fetchExchangeDetail,
+  newExchangeToPhotoCard,
 };

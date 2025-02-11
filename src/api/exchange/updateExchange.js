@@ -7,13 +7,5 @@ import pb from '../pocketbase';
  */
 
 export default async function updateExchange(exchangeId, data) {
-  try {
-    const updatedData = await pb
-      .collection('exchangeList')
-      .update(exchangeId, data);
-    return updatedData;
-  } catch (error) {
-    console.error('Error updating exchange: ', error);
-    throw error;
-  }
+  return await pb.collection('exchangeList').update(exchangeId, data);
 }

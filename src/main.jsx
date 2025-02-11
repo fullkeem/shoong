@@ -6,7 +6,6 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import RootLayout from './Layout/RootLayout/RootLayout';
 import Exchange from './pages/Exchange/Exchange';
 import { phocaData } from './loader/index';
-import exchangeDetailData from './loader/exchangeDetailData';
 import MeetUp from './pages/MeetUp/MeetUp';
 import Profile from './pages/Profile/Profile';
 import Home from './pages/Home/Home';
