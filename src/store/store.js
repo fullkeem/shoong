@@ -19,24 +19,6 @@ export const searchStore = create((set) => ({
   resetSearch: () => set({ search: '' }),
 }));
 
-// 새 교환 글이 추가
-export const usePhotoCardStore = create((set) => ({
-  photoCardData: null,
-  addExchangeToPhoca: (newExchange) =>
-    set((state) => ({
-      photoCardData: {
-        ...state.photoCardData,
-        expand: {
-          ...state.photoCardData.expand,
-          exchangeList: [
-            ...(state.photoCardData.expand?.exchangeList || []),
-            newExchange,
-          ],
-        },
-      },
-    })),
-}));
-
 // 찜한 포토카드 정보 전역으로 관리 + 로컬스토리지에 저장
 export const likeStore = create(
   persist(
@@ -82,33 +64,3 @@ export const isLogin = create(
     { name: '로그인' }
   )
 );
-
-export const useMeetUpStore = create((set) => ({
-  selectedCafe: '', // 선택된 카드의 카페이름을 저장
-  setSelectedCafe: (cafeName) => set({ selectedCafe: cafeName }),
-  selectedLocation: null, // 선택된 위치를 저장
-  setSelectedLocation: (location) => set({ selectedLocation: location }), // 위치 업데이트 메소드
-}));
-
-export const meetUpDataStore = create((set) => ({
-  meetUpData: [],
-  setMeetUpData: (newData) => set({ meetUpData: newData }),
-}));
-
-// // 비속어 필터링
-// const slangRegax = createSlangRegex(SLANG_WORDS);
-
-// export const slangStore = create((set) => ({
-//   slang: SLANG_WORDS,
-//   slangRegax, // 정규식 저장
-//   setSlang: (newSlang) =>
-//     set((state) => ({
-//       slang: [...state.slang, newSlang],
-//       slangRegex: createSlangRegex([...state.slang, newSlang]),
-//     })),
-// }));
-
-export const selectedCardStore = create((set) => ({
-  selectedCard: null,
-  setSelectedCard: (card) => set({ selectedCard: card }),
-}));
