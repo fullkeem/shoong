@@ -33,11 +33,11 @@ export default function MeetUpDetail() {
       <DetailHeader title="자세히" isBottomSheet={undefined} />
       <MeetupCarousel />
       <div className="mt-6 grid grid-cols-1 gap-2 @desktop:grid-cols-2 @desktop:grid-rows-2">
-        <div className="mx-20pxr mb-20pxr min-h-120pxr min-w-320pxr rounded-xl bg-white px-20pxr py-15pxr shadow">
-          <h3 className="mb-4pxr text-base font-extrabold leading-snug text-primary">
+        <div className="bg-white shadow mx-20pxr mb-20pxr min-h-120pxr min-w-320pxr rounded-xl px-20pxr py-15pxr">
+          <h3 className="text-base font-extrabold leading-snug mb-4pxr text-primary">
             {eventTitle}
           </h3>
-          <h4 className="mb-10pxr text-sm font-extrabold leading-tight text-gray-500">
+          <h4 className="text-sm font-extrabold leading-tight text-gray-500 mb-10pxr">
             {cafeName}
           </h4>
 
@@ -46,7 +46,7 @@ export default function MeetUpDetail() {
           <MeetUpDetailItem title="영업기간" content={date} />
         </div>
 
-        <div className="mx-20pxr flex flex-col rounded-xl bg-white shadow">
+        <div className="flex flex-col bg-white shadow mx-20pxr rounded-xl">
           <MeetUpDetailItemContainer
             title="GIFT"
             content={
@@ -73,7 +73,7 @@ export default function MeetUpDetail() {
           />
         </div>
 
-        <div className="mx-20pxr mt-6 flex h-300pxr flex-col rounded-xl shadow">
+        <div className="flex flex-col mt-6 shadow mx-20pxr h-300pxr rounded-xl">
           <MeetUpDetailMap lat={lat} lng={lng} cafeName={cafeName} />
         </div>
 

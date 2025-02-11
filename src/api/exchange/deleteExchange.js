@@ -6,11 +6,5 @@ import pb from '../pocketbase';
  */
 
 export default async function deletedExchange(exchangeId) {
-  try {
-    await pb.collection('exchangeList').delete(exchangeId);
-    return true;
-  } catch (error) {
-    console.error('Error deleting exchange: ', error);
-    throw error;
-  }
+  return await pb.collection('exchangeList').delete(exchangeId);
 }

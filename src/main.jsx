@@ -6,7 +6,6 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import RootLayout from './Layout/RootLayout/RootLayout';
 import Exchange from './pages/Exchange/Exchange';
 import { phocaData } from './loader/index';
-import exchangeDetailData from './loader/exchangeDetailData';
 import MeetUp from './pages/MeetUp/MeetUp';
 import Profile from './pages/Profile/Profile';
 import Home from './pages/Home/Home';
@@ -18,7 +17,6 @@ import ColloectBookDetail from './pages/ColloectBookDetail/ColloectBookDetail';
 import userData from './loader/userData';
 import ExchangeDetail from './pages/ExchangeDetail/ExchangeDetail';
 import MeetUpDetail from './components/MeetUpDetail/MeetUpDetail';
-import meetUpData from './loader/meetUpData';
 import { meetUpDetail } from './loader/meetUpDetailData';
 import ProfileSetting from './pages/ProfileSetting/ProfileSetting';
 import LoginInfo from './pages/ProfileSetting/LoginInfo';
@@ -58,12 +56,10 @@ const router = createBrowserRouter([
       {
         path: '/exchangeDetail/:id',
         element: <ExchangeDetail />,
-        loader: exchangeDetailData,
       },
       {
         path: '/meetup',
         element: <MeetUp />,
-        loader: meetUpData,
       },
       {
         path: '/meetupDetail/:id',

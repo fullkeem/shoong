@@ -6,11 +6,5 @@ import pb from '../pocketbase';
  */
 
 export default async function createExchange(data) {
-  try {
-    const newRecord = await pb.collection('exchangeList').create(data);
-    return newRecord;
-  } catch (error) {
-    console.error('Error creating exchange: ', error);
-    throw error;
-  }
+  return await pb.collection('exchangeList').create(data);
 }

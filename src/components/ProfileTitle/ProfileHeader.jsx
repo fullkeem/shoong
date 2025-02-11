@@ -5,7 +5,7 @@ export default function ProfileHeader() {
   return (
     <>
       {/* 데스크톱 화면 */}
-      <div className="mb-40pxr mt-100pxr hidden flex-row-reverse px-7 py-3 text-end desktop:flex">
+      <div className="mb-40pxr mt-100pxr hidden flex-row-reverse px-7 py-3 text-end desktop:mb-4 desktop:mt-10 desktop:flex">
         <ProfileInfo user="hidden" />
       </div>
 

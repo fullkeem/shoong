@@ -10,8 +10,8 @@ export default function PhocaImg({
     <div className={`${imgClass} relative`}>
       <img
         src={phocaImgSrc}
-        className="h-full w-full rounded-xl object-cover"
         alt={phocaImgAlt}
+        className="object-cover w-full h-full rounded-xl"
         loading="lazy"
       />
       <div className="absolute bottom-2 right-4">{children}</div>

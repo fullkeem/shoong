@@ -2,7 +2,6 @@ import { searchStore } from '@/store/store';
 import { debounce } from 'lodash';
 import { useEffect, useRef } from 'react';
 import { BsSearch } from 'react-icons/bs';
-import { useLocation } from 'react-router-dom';
 
 /**
  * @param {{
@@ -13,7 +12,6 @@ import { useLocation } from 'react-router-dom';
  */
 export default function SearchBar({ name, placeholder, bgStyle }) {
   const { search, setSearch, resetSearch } = searchStore();
-  const location = useLocation();
   const inputRef = useRef();
 
   const handleSearch = (e) => {
@@ -26,21 +24,11 @@ export default function SearchBar({ name, placeholder, bgStyle }) {
       resetSearch();
     };
     return unmount;
-  }, []);
-
-  useEffect(() => {
-    resetSearch();
-  }, [location]);
-
-  useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.value = '';
-    }
-  }, [search]);
+  }, [resetSearch]);
 
   return (
     <form
-      className={`${bgStyle} mx-4 inline-flex w-4/5 flex-row items-start justify-start gap-2 rounded-[30px] px-4 py-1.5`}
+      className={`${bgStyle} flex w-1/3 flex-row items-center justify-start gap-2 rounded-3xl border border-primary bg-white px-4 py-2`}
       style={{ maxWidth: '1280px' }}
     >
       <label className="self-center" htmlFor={name}>
@@ -51,7 +39,7 @@ export default function SearchBar({ name, placeholder, bgStyle }) {
         id={name}
         ref={inputRef}
         placeholder={placeholder}
-        className="w-full self-center bg-transparent"
+        className="w-full self-center bg-transparent outline-none"
         onChange={debounce(handleSearch, 500)}
         defaultValue={search}
       />
