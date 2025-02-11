@@ -1,43 +1,78 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import containsProfanity from '@/libs/filter';
+import { useAddExchangeMutation } from '@/hooks/useExchangeQuery';
 import ConfirmationModal from '@/components/ConfirmationModal/ConfirmationModal';
+import useModalStore from '@/store/useModalStore';
 
-export default function ExchangeForm({ onAddExchange }) {
+export default function ExchangeForm({ loggedInUser, photoCardData }) {
   const navigate = useNavigate();
   const [comment, setComment] = useState('');
-  const [modalMessage, setModalMessage] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const showModal = (message) => {
-    setModalMessage(message);
-    setIsModalOpen(true);
-  };
+  const addExchangeMutation = useAddExchangeMutation();
+  const { isOpen, modalMessage, setIsOpen, setModalMessage } = useModalStore();
 
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const toggleModal = (message) => {
+    setIsOpen();
+    if (message) setModalMessage(message);
   };
 
   const handleConfirmModal = () => {
     if (modalMessage === '로그인이 필요한 서비스입니다.') {
       navigate('/login');
     }
-    closeModal();
+    toggleModal();
+  };
+
+  const checkComment = (comment) => {
+    if (!loggedInUser) {
+      toggleModal('로그인이 필요한 서비스입니다.');
+      return false;
+    }
+
+    if (containsProfanity(comment)) {
+      toggleModal('비속어가 포함된 글은 작성할 수 없습니다.');
+      return false;
+    }
+
+    if (!comment.trim()) {
+      toggleModal('교환 글 내용을 입력해주세요.');
+      return false;
+    }
+
+    return true;
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log('test1');
-    try {
-      await onAddExchange(comment);
-      setComment('');
-      showModal('교환 글이 성공적으로 저장되었습니다.');
-    } catch (error) {
-      showModal(error.message);
-      if (error.message.includes('로그인이 필요한')) {
-        navigate('/login');
-      }
+    if (!checkComment(comment)) {
+      return;
     }
+
+    addExchangeMutation.mutate(
+      {
+        photoCardId: photoCardData.id,
+        userId: loggedInUser.user.id,
+        data: {
+          writer: loggedInUser.user.id,
+          description: comment,
+          status: '교환대기중',
+          chatContent: null,
+        },
+      },
+      {
+        onSuccess: () => {
+          setComment('');
+          toggleModal('교환 글이 성공적으로 저장되었습니다.');
+        },
+      },
+      {
+        onError: (error) => {
+          toggleModal(error?.message || '데이터를 저장하는 데 실패했습니다.');
+        },
+      }
+    );
   };
 
   return (
@@ -88,8 +123,9 @@ export default function ExchangeForm({ onAddExchange }) {
       </fieldset>
 
       <ConfirmationModal
-        isOpen={isModalOpen}
-        onClose={closeModal}
+        title="안내"
+        isOpen={isOpen}
+        onClose={toggleModal}
         onConfirm={handleConfirmModal}
         message={modalMessage}
         confirmButtonText="확인"
