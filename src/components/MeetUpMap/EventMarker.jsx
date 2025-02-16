@@ -3,9 +3,6 @@ import { MapMarker, CustomOverlayMap } from 'react-kakao-maps-sdk';
 
 export default function EventMarker({ meetUpData }) {
   const { setSelectedCafe } = useMeetUpStore();
-  const handleClickMarker = (title) => {
-    setSelectedCafe(title);
-  };
 
   return (
     <>
@@ -15,7 +12,7 @@ export default function EventMarker({ meetUpData }) {
           <div
             key={data.id}
             className="border border-red-50 shadow-md"
-            onClick={() => handleClickMarker(data.cafeName)}
+            onClick={() => setSelectedCafe(data.cafeName)}
           >
             <MapMarker
               position={{
