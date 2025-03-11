@@ -3,6 +3,8 @@
 <img src="https://github.com/FRONTENDSCHOOL8/shoong/assets/103557910/8e4e4ddd-1f85-4967-9072-f341eb465bc0" width="300px" height="150px" />
 
 배포 주소 : https://shoong.vercel.app
+testID: test@gmail.com
+testPW: test12345!
 
 <br />
 
